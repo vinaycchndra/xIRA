@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card mx-auto" style="max-width: 400px; margin-top:100px;">
+
+      <div class="card-body">
+        {% include 'includes/alerts.html' %}
+      <h4 class="card-title mb-3">Sign in</h4>
+      <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+          <div class="form-group mb-3">
+			 <input type="email" class="form-control" placeholder="Work-Email" name="work_email">
+          </div> <!-- form-group// -->
+          <div class="form-group mb-3">
+			<input type="password" class="form-control" placeholder="Password" name="password">
+          </div> <!-- form-group// -->
+          <div class="form-group">
+              <button type="submit" class="btn btn-dark btn-block">Login</button>
+          </div> <!-- form-group// -->
+      </form>
+
+      </div> <!-- card-body.// -->
+    </div> <!-- card .//-->
+<p class="text-center mt-4">Don't have account? <a href="#">Sign up</a></p><br><br>
+
+{% endblock %}
+
+
+
