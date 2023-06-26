@@ -75,4 +75,17 @@ class Account(AbstractBaseUser):
         return True
 
 
+choices_1 = (
+    ('Web_Development', 'Web Application'),
+    ('Software_Development', 'Software Packages'),
+    ('Machine Learning Project', 'Data Science Project'),
+)
+
+
+class ProjectManager(models.Model):
+    project_manager = models.OneToOneField(Account, on_delete=models.CASCADE)
+    domain          = models.CharField(max_length=40, choices=choices_1)
+
+    def __str__(self):
+        return self.project_manager.first_name
 
