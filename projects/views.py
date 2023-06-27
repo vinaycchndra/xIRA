@@ -18,4 +18,4 @@ def create_project(request):
             print(project_category, project_name, project_description, estimated_end_date)
 
 
-    return render(request, 'test.html')
+    return render(request, 'test.html', context)
