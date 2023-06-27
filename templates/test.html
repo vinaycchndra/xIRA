@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="nav-link" type="button"  data-bs-toggle="modal" data-bs-target="#projectCreationModal">Create Project</a>
+
+<div class="modal fade" id="projectCreationModal" tabindex="-1" aria-labelledby="projectCreationLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-success" id="projectCreationLabel">Create Project</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="create_project">
+              {% csrf_token %}
+              <intput type="text" name="hello" class="form-control">
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-dark">Create</button>
+       </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
