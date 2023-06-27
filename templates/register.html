@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section-content padding-y">
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:500px; margin-top:120px;">
+      <article class="card-body">
+		  {% include 'includes/alerts.html' %}
+		<header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+		<form action = "{% url 'register' %}" method="POST">
+				{% csrf_token %}
+				<div class="form-group row">
+					<div class="col form-group">
+						{{form.first_name}}
+
+					</div> <!-- form-group end.// -->
+					<div class="col form-group">
+					  	{{ form.last_name }}
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<br>
+				<div class="form-group row">
+					<div class="col form-group">
+						{{form.work_email}}
+					</div>
+
+					<div class="col form-group">
+							{{ form.contact_number }}
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row.// -->
+				<br>
+				<div class="form-group row">
+					<div class="form-group col-md-6">
+					    {{form.password }}
+					</div> <!-- form-group end.// -->
+					<div class="form-group col-md-6">
+					    	{{form.confirm_password }}
+					</div> <!-- form-group end.// -->
+				</div>
+				<br>
+			    <div class="form-group ">
+			        <button type="submit" class="btn btn-dark btn-block"> Register  </button>
+			    </div> <!-- form-group// -->
+			<br>
+			<span class="text-dark">{{form.work_email.errors}}</span>
+			<span class="text-dark">{{form.non_field_errors }}</span>
+			</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+    <br><br>
+
+{% endblock %}
+
+
+

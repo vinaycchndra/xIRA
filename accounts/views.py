@@ -1,45 +1,37 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
-
+from .models import Account
+from .forms import RegistrationForm
 
 
 def register(request):
     form = RegistrationForm()
+    context = {
+        'form': form
+    }
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            first_name   =  form.cleaned_data['first_name']
-            last_name    =  form.cleaned_data['last_name']
-            email        =  form.cleaned_data['email']
-            phone_number =  form.cleaned_data['phone_number']
-            password     =  form.cleaned_data['password']
-            username     = email.split('@')[0]
+        form_request = RegistrationForm(request.POST)
+        if form_request.is_valid():
+            first_name   =  form_request.cleaned_data['first_name']
+            last_name    =  form_request.cleaned_data['last_name']
+            work_email        =  form_request.cleaned_data['work_email']
+            contact_number =  form_request.cleaned_data['contact_number']
+            password     =  form_request.cleaned_data['password']
             user         = Account.objects.create_user(first_name=first_name, last_name=last_name,
-                                                       email=email, username=username,password=password, )
-            user.phone_number = phone_number
+                                                       work_email=work_email, password=password, )
+            user.contact_number = contact_number
+            user.is_active = True
             user.save()
+            messages.success(request, 'Successfully Registered Kindly Login!')
+            return redirect('login')
+        else:
 
-            # Create User Profile for registering user
-            profile = UserProfile()
-            profile.user_id = user.id
-            profile.profile_picture = 'default/default-user.png'
-            profile.save()
+            context['form'] = form_request
+            messages.error(request, 'Could not register')
 
-            # User Activation code
-            current_site = get_current_site(request)
-            mail_subject = 'Please activate your account'
-            message      =  render_to_string('accounts/account_verification_mail.html', {
-                'user': user,
-                'domain': current_site,
-                'uid':  urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
+    return render(request, 'register.html', context)
 
-            to_email = email
-            send_email = EmailMessage(mail_subject, message, to=[to_email])
-            send_email.send()
-            return redirect('/accounts/login/?command=verification&email='+email)
 
 def login(request):
     if request.method == 'POST':
