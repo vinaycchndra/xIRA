@@ -62,6 +62,7 @@ def edit_project(request, pk):
     context = {
         'project_form': form,
         'project': project,
+        'search_results': None
     }
     if request.method == 'POST':
         form = ProjectCreationForm(request.POST)
@@ -74,13 +75,25 @@ def edit_project(request, pk):
     return render(request, 'edit_project.html', context)
 
 
-def remove_employee(request, project_id, user_id):
+def remove_employee_from_project(request, project_id, user_id):
     project = get_object_or_404(Project, id=project_id)
     query_set = set(project.assignees.all())
     user = get_object_or_404(Account, id=user_id)
     if user in query_set:
         project.assignees.remove(user)
         project.save()
-    url = reverse('edit_project', kwargs={'arg1': project_id})
+    url = reverse('edit_project', kwargs={'pk': project_id})
     return redirect(url)
+
+
+def add_employee_to_project(request, project_id, user_id):
+    project = get_object_or_404(Project, id=project_id)
+    query_set = set(project.assignees.all())
+    user = get_object_or_404(Account, id=user_id)
+    if user not in query_set:
+        project.assignees.add(user)
+        project.save()
+    url = reverse('edit_project', kwargs={'pk': project_id})
+    return redirect(url)
+
 

@@ -79,11 +79,11 @@
     <th>Work Profile </th>
     <th>Add</th>
   </tr>
-          {% for employee in project.assignees.all %}
+          {% for employee in search_results %}
             <tr>
                 <td><strong>{{employee}}</strong></td>
                 <td><p class="text-center">{{employee.work_profile}}</p></td>
-                <td>Add</td>
+                <td><a class="text-success" href="{% url 'remove_user' project.id  employee.id %}" style="text-decoration: none">Add</a></td>
             </tr>
             {% endfor %}
     </table>
