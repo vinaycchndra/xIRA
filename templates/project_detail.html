@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="card text-center">
-  <div class="card-header text-dark">
-     Project Detail
+  <div class="card-header">
+     <strong class="text-success">Started:</strong> {{project.start_date}}
   </div>
   <div class="card-body">
     <h3 class="card-title text-success"><strong>{{project.project_name}}</strong></h3>
@@ -65,8 +65,25 @@
 
   </div>
   <div class="card-footer text-muted">
-      <strong class="text-success">Started On :</strong> {{project.start_date}}
+      <strong class="text-success">Employees Working on the Project</strong>
   </div>
 </div>
+
+<div class="container mt-3">
+        <div class="row">
+
+        {% for employee in project.assignees.all %}
+            <div class="col-sm-3" style="">
+              <div class="alert alert-success" role="alert">
+                  <h5 class="alert-heading text-center"><strong>{{employee}}</strong></h5>
+                  <p class="text-center">{{employee.work_profile}}</p>
+                </div>
+          </div>
+
+        {% endfor %}
+
+        </div>
+</div>
+
 
 {% endblock %}

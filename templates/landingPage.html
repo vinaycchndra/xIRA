@@ -34,7 +34,7 @@
       <td>{{project.estimated_end_date}}</td>
       {% if request.user.is_project_manager and project.project_manager.project_manager == request.user %}
         <td><a href="{% url 'delete_project' project.id %}" style="text-decoration: none" class="text-success">Delete</a></td>
-        <td>Edit</td>
+        <td><a href="{% url 'edit_project' project.id %}" style="text-decoration: none" class="text-success">Edit</a></td>
       {% else %}
         <td>-</td>
         <td>-</td>

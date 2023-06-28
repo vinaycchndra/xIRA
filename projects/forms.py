@@ -10,5 +10,5 @@ class ProjectCreationForm(forms.ModelForm):
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control',  }),
             'project_category': forms.Select(attrs={'class': 'form-control', }),
-            'project_description': forms.Textarea(attrs={'class': 'form-control', }),
+            'project_description': forms.Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':15}),
         }

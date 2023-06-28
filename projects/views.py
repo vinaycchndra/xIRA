@@ -54,3 +54,20 @@ def delete_project(request, pk):
     project.delete()
     return redirect('dashboard')
 
+
+def edit_project(request, pk):
+    project = get_object_or_404(Project, id=pk)
+    form = ProjectCreationForm(instance=project)
+    context = {
+        'project_form': form,
+        'project': project,
+    }
+    if request.method == 'POST':
+        form = ProjectCreationForm(request.POST)
+        if form.is_valid():
+            project.project_name = form.cleaned_data['project_name']
+            project.project_category = form.cleaned_data['project_category']
+            project.project_description = form.cleaned_data['project_description']
+            project.estimated_end_date = form.cleaned_data['estimated_end_date']
+            project.save()
+    return render(request, 'edit_project.html', context)
