@@ -25,7 +25,7 @@
       <td>
 
 
-              <strong class="text-success">{{project.project_name}}</strong>
+              <a href="{% url 'project_detail' project.id %}" style="text-decoration: none" ><strong class="text-success">{{project.project_name}}</strong></a>
       </td>
 
       <td>{{project.project_manager}}</td>
