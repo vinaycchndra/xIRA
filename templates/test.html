@@ -29,9 +29,8 @@
               <br>
               <label class="text-success" for="date_field">End Date:</label>
               <div class="form-row">
-                {{form.estimated_end_date}}
+                <input type="datetime-local" name="estimated_end_date" class="form-control">
               </div>
-
 
               <br>
               <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
@@ -41,7 +40,5 @@
     </div>
   </div>
 </div>
-
-
 
 {% endblock %}
