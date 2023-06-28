@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProjectCreationForm
 from .models import Project
-from accounts.models import ProjectManager
+from accounts.models import ProjectManager, Account
 from django.http import Http404
+from django.urls import reverse
 
 
 def create_project(request):
@@ -71,3 +72,15 @@ def edit_project(request, pk):
             project.estimated_end_date = form.cleaned_data['estimated_end_date']
             project.save()
     return render(request, 'edit_project.html', context)
+
+
+def remove_employee(request, project_id, user_id):
+    project = get_object_or_404(Project, id=project_id)
+    query_set = set(project.assignees.all())
+    user = get_object_or_404(Account, id=user_id)
+    if user in query_set:
+        project.assignees.remove(user)
+        project.save()
+    url = reverse('edit_project', kwargs={'arg1': project_id})
+    return redirect(url)
+

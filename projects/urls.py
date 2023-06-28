@@ -6,5 +6,6 @@ urlpatterns = [
         path('project_detail/<int:project_id>/', views.project_detail, name='project_detail'),
         path('edit_project/<int:pk>/', views.edit_project, name='edit_project'),
         path('delete_project/<int:pk>/', views.delete_project, name='delete_project'),
+        path('remove_employee/<int:project_id>/<int:user_id>/', views.remove_employee, name='remove_user'),
 
 ]

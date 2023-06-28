@@ -55,7 +55,7 @@
             <tr>
                 <td><strong>{{employee}}</strong></td>
                 <td><p class="text-center">{{employee.work_profile}}</p></td>
-                <td>Remove</td>
+                <td><a class="text-success" href="{% url 'remove_user' project.id  employee.id %}" style="text-decoration: none">Remove</a></td>
             </tr>
             {% endfor %}
 
@@ -86,9 +86,6 @@
                 <td>Add</td>
             </tr>
             {% endfor %}
-
-
-
     </table>
     </div>
     </div>
