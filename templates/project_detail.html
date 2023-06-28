@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card text-center">
+  <div class="card-header text-dark">
+     Project Detail
+  </div>
+  <div class="card-body">
+    <h3 class="card-title text-success"><strong>{{project.project_name}}</strong></h3>
+    <div class="container">
+        <div class="row">
+          <div class="col-sm-4" style="">
+              <div class="card">
+
+                <div class="card-body">
+                  <h5 class="card-title text-success"><strong>Project Category</strong></h5>
+                  {{project.project_category}}
+                </div>
+
+              </div>
+          </div>
+          <div class="col-sm-4" style="">
+              <div class="card">
+
+                <div class="card-body">
+                  <h5 class="card-title text-success"><strong>Project Manager</strong></h5>
+                    {{project.project_manager.project_manager}}
+
+                </div>
+              </div>
+          </div>
+
+
+          <div class="col-sm-4" style="">
+              <div class="card">
+
+                <div class="card-body">
+                  <h5 class="card-title text-success"><strong>Project Completion Date</strong></h5>
+                    {{project.estimated_end_date}}
+                </div>
+
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="container mt-3">
+        <div class="row">
+          <div class="col-sm-12" style="">
+              <div class="card">
+
+                <div class="card-body">
+                  <h5 class="card-title text-success"><strong>About</strong></h5>
+
+                  {{project.project_description}}
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-footer text-muted">
+      <strong class="text-success">Started On :</strong> {{project.start_date}}
+  </div>
+</div>
+
+{% endblock %}

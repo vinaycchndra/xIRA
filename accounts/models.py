@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
-# Create your models here.
-
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, work_email, password=None):
         if not work_email:
@@ -73,6 +71,14 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, add_label):
         return True
+
+    def is_project_manager(self):
+        try:
+            temp = ProjectManager.objects.get(project_manager__id=self.id)
+            is_manager = True
+        except ProjectManager.DoesNotExist:
+            is_manager = False
+        return is_manager
 
 
 choices_1 = (

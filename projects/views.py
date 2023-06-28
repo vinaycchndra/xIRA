@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProjectCreationForm
 from .models import Project
 from accounts.models import ProjectManager
+from django.http import Http404
 
 
 def create_project(request):
@@ -21,7 +22,6 @@ def create_project(request):
                                              project_description=project_description,
                                              estimated_end_date=estimated_end_date,
                                              )
-
             # Check if project creater is a project manager since manager is also an assignee
             check_if_manager = False
             try:
@@ -35,6 +35,22 @@ def create_project(request):
             if check_if_manager:
                 project.assignees.add(request.user)
             project.save()
-            return redirect('landing_page')
+            return redirect('dashboard')
 
-    return render(request, 'test.html', context)
+
+def project_detail(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    context = {
+        'project': project
+    }
+    return render(request, 'project_detail.html', context)
+
+
+def delete_project(request, pk):
+    try:
+        project = Project.objects.get(id=pk, project_manager__project_manager=request.user)
+    except Project.DoesNotExist:
+        raise Http404
+    project.delete()
+    return redirect('dashboard')
+

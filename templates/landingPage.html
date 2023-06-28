@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+<table class="table caption-top" id="project_table">
+  <caption><h4 class="text-dark text-center">Projects List</h4></caption>
+  <thead>
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Project Name</th>
+      <th scope="col">Project Manager</th>
+      <th scope="col">Project Category</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+
+        <th scope="col">Delete</th>
+        <th scope="col">Edit</th>
+
+    </tr>
+  </thead>
+{% for project in projects %}
+  <tbody>
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>
+
+
+              <strong class="text-success">{{project.project_name}}</strong>
+      </td>
+
+      <td>{{project.project_manager}}</td>
+      <td>{{project.project_category}}</td>
+      <td>{{project.start_date}}</td>
+      <td>{{project.estimated_end_date}}</td>
+      {% if request.user.is_project_manager and project.project_manager.project_manager == request.user %}
+        <td><a href="{% url 'delete_project' project.id %}" style="text-decoration: none" class="text-success">Delete</a></td>
+        <td>Edit</td>
+      {% else %}
+        <td>-</td>
+        <td>-</td>
+      {% endif %}
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+</section>
+
+
+{% endblock %}
+
