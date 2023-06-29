@@ -69,7 +69,7 @@ def edit_project(request, pk):
         if 'keyword' in request.POST:
             keyword = request.POST['keyword']
             if keyword:
-                found_users = Account.objects.order_by('-date_joined').filter(
+                found_users = Account.objects.filter(
                     Q(first_name__icontains=keyword) |
                     Q(last_name__icontains=keyword) |
                     Q(work_profile__icontains=keyword))
