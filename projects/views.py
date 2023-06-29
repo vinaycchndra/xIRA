@@ -5,6 +5,7 @@ from accounts.models import ProjectManager, Account
 from django.http import Http404
 from django.urls import reverse
 from django.db.models import Q
+from django.contrib import messages
 
 
 def create_project(request):
