@@ -8,6 +8,7 @@
     <div class="card-body">
       <a href="{% url 'dashboard' %}" class="text-success"  style="text-decoration: none"><p class="text-center">All Project</p></a>
     <hr>
+
       <a href="{% url 'dashboard' request.user.id %}" class="text-success"  style="text-decoration: none"><p class="text-center">My Projects</p></a>
 
     <hr>
@@ -31,7 +32,9 @@
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col">Project Name</th>
+      <th scope="col">
+          Project Name
+      </th>
       <th scope="col">Project Manager</th>
       <th scope="col">Project Category</th>
       <th scope="col">Start Date</th>
@@ -52,7 +55,9 @@
               <a href="{% url 'project_detail' project.id %}" style="text-decoration: none" ><strong class="text-success">{{project.project_name}}</strong></a>
       </td>
 
-      <td>{{project.project_manager}}</td>
+      <td>
+          <a href="{% url 'manager_dashboard' project.project_manager.project_manager.id %}" style="text-decoration: none" class="text-success">{{project.project_manager}}</a>
+      </td>
       <td>{{project.project_category}}</td>
       <td>{{project.start_date}}</td>
       <td>{{project.estimated_end_date}}</td>
