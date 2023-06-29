@@ -68,8 +68,9 @@
 <div class="col-lg" style="">
 <div class="card h-90">
     <div class="card-body">
-        <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Employees" aria-label="Search">
+        <form action="{% url 'edit_project' project.id %}" class="d-flex"  method="POST">
+            {% csrf_token %}
+                <input class="form-control me-2" name="keyword" type="search" placeholder="Search Employees" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <br>
@@ -83,7 +84,7 @@
             <tr>
                 <td><strong>{{employee}}</strong></td>
                 <td><p class="text-center">{{employee.work_profile}}</p></td>
-                <td><a class="text-success" href="{% url 'remove_user' project.id  employee.id %}" style="text-decoration: none">Add</a></td>
+                <td><a class="text-success" href="{% url 'add_user' project.id  employee.id %}" style="text-decoration: none">Add</a></td>
             </tr>
             {% endfor %}
     </table>

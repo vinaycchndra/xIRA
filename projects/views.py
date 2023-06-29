@@ -4,6 +4,7 @@ from .models import Project
 from accounts.models import ProjectManager, Account
 from django.http import Http404
 from django.urls import reverse
+from django.db.models import Q
 
 
 def create_project(request):
@@ -65,13 +66,22 @@ def edit_project(request, pk):
         'search_results': None
     }
     if request.method == 'POST':
-        form = ProjectCreationForm(request.POST)
-        if form.is_valid():
-            project.project_name = form.cleaned_data['project_name']
-            project.project_category = form.cleaned_data['project_category']
-            project.project_description = form.cleaned_data['project_description']
-            project.estimated_end_date = form.cleaned_data['estimated_end_date']
-            project.save()
+        if 'keyword' in request.POST:
+            keyword = request.POST['keyword']
+            if keyword:
+                found_users = Account.objects.order_by('-date_joined').filter(
+                    Q(first_name__icontains=keyword) |
+                    Q(last_name__icontains=keyword) |
+                    Q(work_profile__icontains=keyword))
+                context['search_results'] = found_users
+        else:
+            form = ProjectCreationForm(request.POST)
+            if form.is_valid():
+                project.project_name = form.cleaned_data['project_name']
+                project.project_category = form.cleaned_data['project_category']
+                project.project_description = form.cleaned_data['project_description']
+                project.estimated_end_date = form.cleaned_data['estimated_end_date']
+                project.save()
     return render(request, 'edit_project.html', context)
 
 
