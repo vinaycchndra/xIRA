@@ -56,16 +56,16 @@
       </td>
 
       <td>
-          <a href="{% url 'manager_dashboard' project.project_manager.project_manager.id %}" style="text-decoration: none" class="text-success">{{project.project_manager}}</a>
+          <a href="{% url 'manager_dashboard' project.project_manager.project_manager.id %}" style="text-decoration: none; color: hotpink;" class="text-dark">{{project.project_manager}}</a>
       </td>
       <td>
-      <a href="{% url 'project_category_dashboard' project.project_category|slugify %}" style="text-decoration: none" class="text-success">{{project.project_category}}</a>
+      <a href="{% url 'project_category_dashboard' project.project_category|slugify %}" style="text-decoration: none; color: hotpink;" class="text-dark">{{project.project_category}}</a>
       </td>
       <td>{{project.start_date}}</td>
       <td>{{project.estimated_end_date}}</td>
       {% if request.user.is_project_manager and project.project_manager.project_manager == request.user %}
-        <td><a href="{% url 'delete_project' project.id %}" style="text-decoration: none" class="text-success">Delete</a></td>
-        <td><a href="{% url 'edit_project' project.id %}" style="text-decoration: none" class="text-success">Edit</a></td>
+        <td><a href="{% url 'delete_project' project.id %}" style="text-decoration: none; color: hotpink;" class="text-success">Delete</a></td>
+        <td><a href="{% url 'edit_project' project.id %}" style="text-decoration: none; color: hotpink;" class="text-success">Edit</a></td>
       {% else %}
         <td>-</td>
         <td>-</td>
