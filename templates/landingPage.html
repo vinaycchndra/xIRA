@@ -1,8 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section>
-<table class="table caption-top" id="project_table">
+<div class="container mt-4">
+ <div class="row">
+    <div class="col-sm-3" style="">
+      <div class="card">
+    <div class="card-body">
+      <a href="{% url 'dashboard' %}" class="text-success"  style="text-decoration: none"><p class="text-center">All Project</p></a>
+    <hr>
+      <a href="{% url 'dashboard' request.user.id %}" class="text-success"  style="text-decoration: none"><p class="text-center">My Projects</p></a>
+
+    <hr>
+      <a href="#" class="text-success"  style="text-decoration: none"><p class="text-center">All Tickets</p></a>
+
+    <hr>
+      <a href="#" class="text-success"  style="text-decoration: none"><p class="text-center">My Tickets</p></a>
+    </div>
+      </div>
+
+
+    </div>
+
+
+    <div class="col-lg" style="">
+        <div class="card">
+  <div class="card">
+    <div class="card-body">
+    <table class="table caption-top" style="position: relative;height: 520px;overflow: auto;display: block;" id="project_table">
   <caption><h4 class="text-dark text-center">Projects List</h4></caption>
   <thead>
     <tr>
@@ -43,8 +67,12 @@
 {% endfor %}
   </tbody>
 </table>
-</section>
-
+      </div>
+  </div>
+      </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
