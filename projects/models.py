@@ -2,9 +2,9 @@ from django.db import models
 from accounts.models import Account, ProjectManager
 
 choices = (
-    ('Web_Development', 'Web Application'),
-    ('Software_Development', 'Software Packages'),
-    ('Machine Learning Project', 'Data Science Project'),
+    ('Web Development', 'Web Development'),
+    ('Software Development', 'Software Development'),
+    ('Machine Learning Project', 'Machine Learning Project'),
 )
 
 

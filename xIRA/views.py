@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from projects.models import Project
 from accounts.models import Account
-
+from slugify import slugify
 
 
 def dashboard(request, user_id=None):
@@ -23,5 +23,16 @@ def manager_dashboard(request, manager_id):
     }
     return render(request, 'landingPage.html', context)
 
-def project_category(request, project_category):
-    e
+
+def project_category(request, project_slug):
+    manager_project = Project.objects.all()
+    list_projects = []
+    for project in manager_project:
+        print(slugify(project.project_category), project_slug)
+        if slugify(project.project_category) == project_slug:
+            list_projects.append(project)
+
+    context = {
+        'projects': list_projects,
+    }
+    return render(request, 'landingPage.html', context)
