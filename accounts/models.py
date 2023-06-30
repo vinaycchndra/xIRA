@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, work_email, password=None):
         if not work_email:
@@ -94,4 +95,7 @@ class ProjectManager(models.Model):
 
     def __str__(self):
         return self.project_manager.first_name
+
+    def get_all_project(self):
+        return self.project_set.all()
 

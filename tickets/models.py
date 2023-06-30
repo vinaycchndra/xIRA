@@ -8,10 +8,10 @@ status_field = (('Backlog', 'back-log'),
                 ('Complete', 'complete'),
                 )
 
-priority_field = (('High', 'high'),
-                  ('Medium', 'medium'),
-                  ('Low', 'low'),
-                  ('Lowest', 'lowest'),
+priority_field = (('high', 'High'),
+                  ('medium', 'Medium'),
+                  ('low', 'Low'),
+                  ('lowest', 'Lowest'),
                   )
 
 
@@ -20,7 +20,7 @@ class Task(models.Model):
     task_type     = models.CharField(max_length=30, choices=(('Bug', 'bug'), ('New Task', 'new task')))
     short_summary = models.CharField(max_length=80)
     description   = models.TextField(max_length=500)
-    assignees     = models.ManyToManyField(Account)
+    assignee     = models.ForeignKey(Account, on_delete=models.CASCADE, default=1)
     status        = models.CharField(max_length=25, choices=status_field)
     priority      = models.CharField(max_length=25, choices=priority_field)
     start_date    = models.DateTimeField(auto_now_add=True)

@@ -1,11 +1,11 @@
 from django.db import models
 from accounts.models import Account, ProjectManager
 
-choices = (
+choices = [
     ('Web Development', 'Web Development'),
     ('Software Development', 'Software Development'),
     ('Machine Learning Project', 'Machine Learning Project'),
-)
+]
 
 
 class Project(models.Model):

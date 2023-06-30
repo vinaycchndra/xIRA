@@ -2,35 +2,42 @@
 
 
 {% block content %}
-<div class="container mt-4">
-
-
-
-    <div class="card row" style="max-width:1400px; margin-top:20px;">
+<div class="container">
+    <div class="card mx-atuo" style="max-width:1400px; margin-top:60px">
       <article class="card-body">
 		  {% include 'includes/alerts.html' %}
 		<header class="mb-4 text-success"><h4 class="card-title">Create Ticket</h4></header>
-		<form action = "{% url 'register' %}" method="POST">
+		<form action = "{% url 'create_ticket' %}" method="POST">
 				{% csrf_token %}
 				<div class="form-group row">
+
 					<div class="col form-group">
-						<label class="text-success" for="">Project Name:</label>
-						<input type="text" class="form-control" name="project">
+						<label class="text-success" for="project_id">Project Name:</label>
+						<select class="form-control" name="project_id">
+						{% for choice in project_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+
+						<!--input type="text" class="form-control" name="project"-->
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Task Type:</label>
-						<input type="text" class="form-control" name="task_type">
+						{{form.task_type}}
+						<!--input type="text" class="form-control" name="task_type"-->
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Priority:</label>
-						<input type="text" class="form-control" name="priority">
+						{{form.priority}}
+						<!--input type="text" class="form-control" name="priority"-->
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Status:</label>
-						<input type="text" class="form-control" name="status">
+						{{form.status}}
+						<!--input type="text" class="form-control" name="status"-->
 					</div> <!-- form-group end.// -->
 
 
@@ -42,21 +49,26 @@
 				<br>
 
 				<div class="form-group row">
-
 					<div class="col form-group">
 			            <label class="text-success" for="">Short Summary:</label>
 						<input type="text" class="form-control" name="short_summary">
 					</div> <!-- form-group end.// -->
-
+					<div class="col form-group">
+						<label class="text-success" for="assignee_id">Assign To:</label>
+						<select class="form-control" name="assignee_id">
+						{% for choice in assignee_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div>
 
 				</div> <!-- form-row end.// -->
 				<br>
-
 				<div class="form-group row">
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Description:</label>
-						<textarea  class="form-control" name="desscription" rows="3"></textarea>
+						<textarea  class="form-control" name="description" rows="3"></textarea>
 					</div> <!-- form-group end.// -->
 
 				</div> <!-- form-row end.// -->
@@ -69,28 +81,11 @@
 			<br>
 			<span class="text-dark">{{form.work_email.errors}}</span>
 			<span class="text-dark">{{form.non_field_errors}}</span>
-			</form>
+
+
+		</form>
 		</article><!-- card-body.// -->
     </div> <!-- card .// -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
 
 
