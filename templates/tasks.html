@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-4">
+
+
+
+    <div class="card row" style="max-width:1400px; margin-top:20px;">
+      <article class="card-body">
+		  {% include 'includes/alerts.html' %}
+		<header class="mb-4 text-success"><h4 class="card-title">Create Ticket</h4></header>
+		<form action = "{% url 'register' %}" method="POST">
+				{% csrf_token %}
+				<div class="form-group row">
+					<div class="col form-group">
+						<label class="text-success" for="">Project Name:</label>
+						<input type="text" class="form-control" name="project">
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Task Type:</label>
+						<input type="text" class="form-control" name="task_type">
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Priority:</label>
+						<input type="text" class="form-control" name="priority">
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Status:</label>
+						<input type="text" class="form-control" name="status">
+					</div> <!-- form-group end.// -->
+
+
+					<div class="col form-group">
+			            <label class="text-success" for="">End Time:</label>
+						<input type="datetime-local" class="form-control" name="estimated_end_date">
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<br>
+
+				<div class="form-group row">
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Short Summary:</label>
+						<input type="text" class="form-control" name="short_summary">
+					</div> <!-- form-group end.// -->
+
+
+				</div> <!-- form-row end.// -->
+				<br>
+
+				<div class="form-group row">
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Description:</label>
+						<textarea  class="form-control" name="desscription" rows="3"></textarea>
+					</div> <!-- form-group end.// -->
+
+				</div> <!-- form-row end.// -->
+
+				<br>
+
+			    <div class="form-group ">
+			        <button type="submit" class="btn btn-dark btn-block"> Create </button>
+			    </div> <!-- form-group// -->
+			<br>
+			<span class="text-dark">{{form.work_email.errors}}</span>
+			<span class="text-dark">{{form.non_field_errors}}</span>
+			</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}
