@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from projects.models import Project
 from accounts.models import Account
 from slugify import slugify
+from django.contrib.auth.decorators import  login_required
 
 
+@login_required(login_url='login')
 def dashboard(request, user_id=None):
     if user_id is None:
         projects = Project.objects.all()

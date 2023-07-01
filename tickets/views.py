@@ -10,16 +10,19 @@ from .models import Task
 def manage_ticket(request, project_id):
     if request.user.is_project_manager():
         all_task = get_all_tickets_project_manager(request.user)
+        all_task = all_task.order_by('start_date')
         context = {
             'tasks': all_task,
         }
     return render(request, 'manage_ticket.html', context)
 
 
-def create_ticket(request, ticket_id=None):
-
+def create_ticket(request, project_id):
     if request.user.is_project_manager():
-        project_choice, assignee_choice = get_choice_fields(request.user)
+        project_choice, assignee_choice = all_assignees_for_the_project(request.user, project_id)
+
+        if project_choice is None:
+            return HttpResponse('You Can Not Create Ticket For this Project')
         form = CreateTicketForm()
         context = {
             'form': form,
@@ -29,10 +32,9 @@ def create_ticket(request, ticket_id=None):
         if request.method == 'POST':
             form = CreateTicketForm(request.POST)
             context['form'] = form
-            project_id = request.POST['project_id']
             assignee_id = request.POST['assignee_id']
-            if project_id == "" or assignee_id == "":
-                messages.error(request, "Please Select Project Id and Assignee Id")
+            if assignee_id == "":
+                messages.error(request, "Please Select Assignee Id")
                 return render(request, 'tasks.html', context)
             else:
                 get_project = get_object_or_404(Project, id=request.POST['project_id'])
@@ -64,22 +66,18 @@ def create_ticket(request, ticket_id=None):
     return HttpResponse("You do not have permission to create Tasks")
 
 
-def get_choice_fields(user):
+def all_assignees_for_the_project(user, project_id):
     project_manager = ProjectManager.objects.get(project_manager__id=user.id)
-    project_choice = project_manager.get_all_project()
-    assignee_choice = set()
-    for projects in project_choice:
-        assignee_choice = assignee_choice.union(set(projects.assignees.all()))
-    project_coice_tuple_list = []
-    assignee_choice_tuple_list = []
-
-    for pr_choice in project_choice:
-        project_coice_tuple_list.append((pr_choice.id, pr_choice))
-
-    for ass_choice in assignee_choice:
-        assignee_choice_tuple_list.append((ass_choice.id, ass_choice))
-
-    return project_coice_tuple_list, assignee_choice_tuple_list
+    projects = project_manager.get_all_project().values_list('id', flat=True)
+    if project_id in projects:
+        project = Project.objects.get(id=project_id)
+        assignee = project.assignees.all()
+        project_choice_tuple_list = [(project.id, project)]
+        assignee_choice_tuple_list = []
+        for ass_choice in assignee:
+            assignee_choice_tuple_list.append((ass_choice.id, ass_choice))
+        return project_choice_tuple_list, assignee_choice_tuple_list
+    return None, None
 
 
 def get_all_tickets_project_manager(user):
