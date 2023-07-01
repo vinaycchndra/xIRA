@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from accounts.models import ProjectManager, Account
 from .forms import CreateTicketForm
@@ -6,13 +6,15 @@ from django.shortcuts import get_object_or_404
 from projects.models import Project
 from .models import Task
 
-def manage_ticket(request, project_id):
 
-    return render(request, 'tasks.html')
+def manage_ticket(request, project_id):
+    return render(request, 'manage_ticket.html')
 
 
 def create_ticket(request, ticket_id=None):
-    if request.user.is_project_manager:
+
+    if request.user.is_project_manager():
+        print(request.user.id)
         project_choice, assignee_choice = get_choice_fields(request.user)
         form = CreateTicketForm()
         context = {
@@ -55,6 +57,8 @@ def create_ticket(request, ticket_id=None):
                 for key, value in form.errors.as_data().items():
                     messages.error(request,  key+": "+str(value[0]))
         return render(request, 'tasks.html', context)
+    return HttpResponse("You do not have permission to create Tasks")
+
 
 
 def get_choice_fields(user):

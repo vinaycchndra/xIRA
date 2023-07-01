@@ -2,7 +2,7 @@
 
     {% for message in messages %}
         <div id="message" class="w-100 p-1" style="height: 100px;">
-        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
             {{ message }}
         </div>

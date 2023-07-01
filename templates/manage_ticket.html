@@ -2,4 +2,63 @@
 
 {% block content %}
 
+<div class="container mt-4">
+    <div class="card mx-atuo" style="max-width:1400px;">
+      <article class="card-body">
+		<header class="text-success"><h4><strong class="card-title">Get Tickets</strong></h4></header>
+		<form action = "#" method="POST">
+				{% csrf_token %}
+				<div class="form-group row">
+
+					<div class="col form-group" style="">
+			            <label class="text-success" for=""></label>
+                        	<button class="btn btn-dark form-control" href="#"><strong>Filter</strong></button>
+            		</div>
+
+					<div class="col form-group">
+						<label class="text-success" for="project_id">Project Name:</label>
+						<select class="form-control" name="project_id">
+						<option value="">----Choose Project----</option>
+						{% for choice in project_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+						<label class="text-success" for="assignee_id">Assign To:</label>
+						<select class="form-control" name="assignee_id" required>
+						<option value="">----Pick Name----</option>
+						{% for choice in assignee_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div>
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Task Type:</label>
+						<input type="text" class="form-control" name="task_type">
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Priority:</label>
+						<input type="text" class="form-control" name="priority">
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Status:</label>
+						<input type="text" class="form-control" name="status">
+					</div> <!-- form-group end.// -->
+
+				</div> <!-- form-row end.// -->
+		</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+</div>
+
+
+
+
+
+
 {% endblock %}
