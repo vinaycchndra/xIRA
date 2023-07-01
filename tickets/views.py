@@ -8,13 +8,17 @@ from .models import Task
 
 
 def manage_ticket(request, project_id):
-    return render(request, 'manage_ticket.html')
+    if request.user.is_project_manager():
+        all_task = get_all_tickets_project_manager(request.user)
+        context = {
+            'tasks': all_task,
+        }
+    return render(request, 'manage_ticket.html', context)
 
 
 def create_ticket(request, ticket_id=None):
 
     if request.user.is_project_manager():
-        print(request.user.id)
         project_choice, assignee_choice = get_choice_fields(request.user)
         form = CreateTicketForm()
         context = {
@@ -60,7 +64,6 @@ def create_ticket(request, ticket_id=None):
     return HttpResponse("You do not have permission to create Tasks")
 
 
-
 def get_choice_fields(user):
     project_manager = ProjectManager.objects.get(project_manager__id=user.id)
     project_choice = project_manager.get_all_project()
@@ -77,4 +80,16 @@ def get_choice_fields(user):
         assignee_choice_tuple_list.append((ass_choice.id, ass_choice))
 
     return project_coice_tuple_list, assignee_choice_tuple_list
+
+
+def get_all_tickets_project_manager(user):
+    project_manager = ProjectManager.objects.get(project_manager__id=user.id)
+    projects = project_manager.get_all_project()
+    if len(projects) >= 1:
+        project_1 = projects[0]
+        all_tickets = Task.objects.filter(project__id=project_1.id)
+        for i in range(1, len(projects)):
+            all_tickets = all_tickets.union(Task.objects.filter(project__id=projects[i].id))
+        return all_tickets
+    return None
 

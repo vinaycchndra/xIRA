@@ -57,16 +57,19 @@
 </div>
 
 <div class="container mt-4">
- <div class="alert alert-primary" role="alert">
-	 <strong>Vinay Chandra Joshi</strong>
-	 <strong class="text-muted">| E-Commerce Website</strong>
-	 <strong class="text-muted">| Status</strong>
-	 <strong class="text-muted">| Priority</strong>
-	 <strong class="text-muted">| Task Type</strong>
-	 <small class="text-muted">| (Short Summary)</small>
+	{% for task in tasks %}
+	<div class="alert alert-primary" role="alert">
+	 <strong>{{task.assignee}}</strong>
+	 <strong class="text-muted">| {{task.project}}</strong>
+	 <strong class="text-muted">| {{task.status}}</strong>
+	 <strong class="text-muted">| {{task.priority}}</strong>
+	 <strong class="text-muted">| {{task.task_type}}</strong>
+	 <small class="text-muted">| ({{task.short_summary}})</small>
 	 <hr>
-	 <p>Description</p>
- </div>
+	 <p>{{task.description}}</p>
+ 	</div>
+	{% endfor %}
+
 <div class="alert alert-secondary" role="alert">
   <strong>Vinay Chandra Joshi</strong>
 	 <strong class="text-muted">| E-Commerce Website</strong>
