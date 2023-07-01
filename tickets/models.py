@@ -2,10 +2,10 @@ from django.db import models
 from projects.models import Project
 from accounts.models import Account
 
-status_field = (('Backlog', 'back-log'),
-                ('Not Started', 'not-started'),
-                ('In Progress', 'in-progress'),
-                ('Complete', 'complete'),
+status_field = (('back-log', 'Backlog'),
+                ('open', 'Open'),
+                ('in-progress', 'In Progress'),
+                ('complete', 'Complete'),
                 )
 
 priority_field = (('high', 'High'),
@@ -17,7 +17,7 @@ priority_field = (('high', 'High'),
 
 class Task(models.Model):
     project       = models.ForeignKey(Project, on_delete=models.CASCADE)
-    task_type     = models.CharField(max_length=30, choices=(('Bug', 'bug'), ('New Task', 'new task')))
+    task_type     = models.CharField(max_length=30, choices=(('bug', 'Bug'), ('new task', 'New Task')))
     short_summary = models.CharField(max_length=80)
     description   = models.TextField(max_length=500)
     assignee     = models.ForeignKey(Account, on_delete=models.CASCADE, default=1)

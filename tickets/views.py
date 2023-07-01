@@ -22,8 +22,16 @@ def create_ticket(request, ticket_id=None):
         }
         if request.method == 'POST':
             form = CreateTicketForm(request.POST)
-            get_project = get_object_or_404(Project, id=request.POST['project_id'])
-            get_assignee = get_object_or_404(Account, id=request.POST['project_id'])
+            context['form'] = form
+            project_id = request.POST['project_id']
+            assignee_id = request.POST['assignee_id']
+            if project_id == "" or assignee_id == "":
+                messages.error(request, "Please Select Project Id and Assignee Id")
+                return render(request, 'tasks.html', context)
+            else:
+                get_project = get_object_or_404(Project, id=request.POST['project_id'])
+                get_assignee = get_object_or_404(Account, id=request.POST['assignee_id'])
+
             if form.is_valid():
                 task_type = form.cleaned_data['task_type']
                 status = form.cleaned_data['status']
@@ -41,11 +49,11 @@ def create_ticket(request, ticket_id=None):
                                            assignee=get_assignee,
                                            )
                 task.save()
-                messages.success(request, 'Successfully create the ticket')
+                messages.success(request, 'Successfully assigned to '+task.assignee.first_name)
                 return redirect('create_ticket')
             else:
-                messages.error(request, 'Not valid enteries please fill them back')
-                return redirect('create_ticket')
+                for key, value in form.errors.as_data().items():
+                    messages.error(request,  key+": "+str(value[0]))
         return render(request, 'tasks.html', context)
 
 
