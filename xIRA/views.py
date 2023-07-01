@@ -30,7 +30,6 @@ def project_category(request, project_slug):
     manager_project = Project.objects.all()
     list_projects = []
     for project in manager_project:
-        print(slugify(project.project_category), project_slug)
         if slugify(project.project_category) == project_slug:
             list_projects.append(project)
 

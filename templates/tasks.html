@@ -13,10 +13,8 @@
 
 					<div class="col form-group">
 						<label class="text-success" for="project_id">Project Name:</label>
-						<select class="form-control" name="project_id">
-						{% for choice in project_choice %}
-							<option value="{{choice.0}}">{{choice.1}}</option>
-						{% endfor %}
+						<select class="form-control" name="project_id" value="{{project_choice.0}}">
+							<option value="{{project_choice.0}}">{{project_choice.1}}</option>
 						</select>
 
 						<!--input type="text" class="form-control" name="project"-->

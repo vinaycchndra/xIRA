@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, reverse
 from django.contrib import messages
 from accounts.models import ProjectManager, Account
 from .forms import CreateTicketForm
@@ -7,29 +7,35 @@ from projects.models import Project
 from .models import Task
 
 
-def manage_ticket(request, project_id):
+def manage_ticket(request):
     if request.user.is_project_manager():
         all_task = get_all_tickets_project_manager(request.user)
-        all_task = all_task.order_by('start_date')
+        all_task = all_task.order_by('-start_date')
         context = {
             'tasks': all_task,
         }
     return render(request, 'manage_ticket.html', context)
 
 
-def create_ticket(request, project_id):
-    if request.user.is_project_manager():
-        project_choice, assignee_choice = all_assignees_for_the_project(request.user, project_id)
+def create_ticket(request, project_id=None):
+    context = {
 
-        if project_choice is None:
-            return HttpResponse('You Can Not Create Ticket For this Project')
-        form = CreateTicketForm()
-        context = {
-            'form': form,
-            'project_choice': project_choice,
-            'assignee_choice': assignee_choice,
-        }
-        if request.method == 'POST':
+    }
+    if request.user.is_project_manager():
+        if request.method == 'GET':
+            print(request.method)
+            print(request.user.first_name)
+            project_choice, assignee_choice = all_assignees_for_the_project(request.user, project_id)
+
+            if project_choice is None:
+                return HttpResponse('You Can Not Create Ticket For this Project')
+            form = CreateTicketForm()
+            context['form'] = form
+            context['project_choice'] = project_choice[0]
+            context['assignee_choice'] = assignee_choice
+
+        elif request.method == 'POST':
+            print(request.method)
             form = CreateTicketForm(request.POST)
             context['form'] = form
             assignee_id = request.POST['assignee_id']
@@ -58,7 +64,7 @@ def create_ticket(request, project_id):
                                            )
                 task.save()
                 messages.success(request, 'Successfully assigned to '+task.assignee.first_name)
-                return redirect('create_ticket')
+                return redirect('manage_ticket')
             else:
                 for key, value in form.errors.as_data().items():
                     messages.error(request,  key+": "+str(value[0]))
