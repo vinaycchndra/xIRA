@@ -14,10 +14,10 @@ priority_field = (('high', 'High'),
                   ('lowest', 'Lowest'),
                   )
 
-
+task_type_choices=(('bug', 'Bug'), ('new task', 'New Task'))
 class Task(models.Model):
     project       = models.ForeignKey(Project, on_delete=models.CASCADE)
-    task_type     = models.CharField(max_length=30, choices=(('bug', 'Bug'), ('new task', 'New Task')))
+    task_type     = models.CharField(max_length=30, choices = task_type_choices)
     short_summary = models.CharField(max_length=80)
     description   = models.TextField(max_length=500)
     assignee     = models.ForeignKey(Account, on_delete=models.CASCADE, default=1)

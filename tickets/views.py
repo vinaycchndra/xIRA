@@ -5,15 +5,26 @@ from .forms import CreateTicketForm
 from django.shortcuts import get_object_or_404
 from projects.models import Project
 from .models import Task
+from .models import status_field, task_type_choices, priority_field
 
 
 def manage_ticket(request):
     if request.user.is_project_manager():
-        all_task = get_all_tickets_project_manager(request.user)
-        all_task = all_task.order_by('-start_date')
+        project_coice_tuple_list, assignee_choice_tuple_list = get_choice_fields(request.user)
         context = {
-            'tasks': all_task,
+            'project_choice': project_coice_tuple_list,
+            'assignee_choice': assignee_choice_tuple_list,
+            'status_choice': status_field,
+            'task_type_choice': task_type_choices,
+            'priority_choice': priority_field,
         }
+        all_task = get_all_tickets_project_manager(request.user)
+        if len(request.GET)>0:
+            pass
+        else:
+            all_task = all_task.order_by('-start_date')
+            context['tasks'] = all_task
+
     return render(request, 'manage_ticket.html', context)
 
 
@@ -23,8 +34,6 @@ def create_ticket(request, project_id=None):
     }
     if request.user.is_project_manager():
         if request.method == 'GET':
-            print(request.method)
-            print(request.user.first_name)
             project_choice, assignee_choice = all_assignees_for_the_project(request.user, project_id)
 
             if project_choice is None:
@@ -35,7 +44,6 @@ def create_ticket(request, project_id=None):
             context['assignee_choice'] = assignee_choice
 
         elif request.method == 'POST':
-            print(request.method)
             form = CreateTicketForm(request.POST)
             context['form'] = form
             assignee_id = request.POST['assignee_id']
@@ -96,4 +104,22 @@ def get_all_tickets_project_manager(user):
             all_tickets = all_tickets.union(Task.objects.filter(project__id=projects[i].id))
         return all_tickets
     return None
+
+
+def get_choice_fields(user):
+    project_manager = ProjectManager.objects.get(project_manager__id=user.id)
+    project_choice = project_manager.get_all_project()
+    assignee_choice = set()
+    for projects in project_choice:
+        assignee_choice = assignee_choice.union(set(projects.assignees.all()))
+    project_coice_tuple_list = []
+    assignee_choice_tuple_list = []
+
+    for pr_choice in project_choice:
+        project_coice_tuple_list.append((pr_choice.id, pr_choice))
+
+    for ass_choice in assignee_choice:
+        assignee_choice_tuple_list.append((ass_choice.id, ass_choice))
+
+    return project_coice_tuple_list, assignee_choice_tuple_list
 

@@ -6,7 +6,7 @@
     <div class="card mx-auto">
       <article class="card-body">
 		<header class="text-success"><h4><strong class="card-title">Get Tickets</strong></h4></header>
-		<form action = "#" method="POST">
+		<form action = "#" method="GET">
 				{% csrf_token %}
 				<div class="form-group row">
 
@@ -18,7 +18,7 @@
 					<div class="col form-group">
 						<label class="text-success" for="project_id">Project Name:</label>
 						<select class="form-control" name="project_id">
-						<option value="">----Choose Project----</option>
+						<option value="">----Choose----</option>
 						{% for choice in project_choice %}
 							<option value="{{choice.0}}">{{choice.1}}</option>
 						{% endfor %}
@@ -26,9 +26,9 @@
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
-						<label class="text-success" for="assignee_id">Assign To:</label>
-						<select class="form-control" name="assignee_id" required>
-						<option value="">----Pick Name----</option>
+						<label class="text-success" for="assignee_id">Assigned To:</label>
+						<select class="form-control" name="assignee_id">
+						<option value="">----Choose----</option>
 						{% for choice in assignee_choice %}
 							<option value="{{choice.0}}">{{choice.1}}</option>
 						{% endfor %}
@@ -37,17 +37,32 @@
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Task Type:</label>
-						<input type="text" class="form-control" name="task_type">
+						<select class="form-control" name="task_type">
+						<option value="">----Choose----</option>
+						{% for choice in task_type_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Priority:</label>
-						<input type="text" class="form-control" name="priority">
+						<select class="form-control" name="priority">
+						<option value="">----Choose----</option>
+						{% for choice in priority_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
 					</div> <!-- form-group end.// -->
 
 					<div class="col form-group">
 			            <label class="text-success" for="">Status:</label>
-						<input type="text" class="form-control" name="status">
+						<select class="form-control" name="status">
+						<option value="">----Choose----</option>
+						{% for choice in status_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
 					</div> <!-- form-group end.// -->
 
 				</div> <!-- form-row end.// -->
