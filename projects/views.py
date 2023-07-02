@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .forms import ProjectCreationForm
 from .models import Project
 from accounts.models import ProjectManager, Account
 from django.http import Http404
 from django.urls import reverse
 from django.db.models import Q
-from django.contrib import messages
+from tickets.models import Task
 
 
 def create_project(request):
@@ -88,23 +88,32 @@ def edit_project(request, pk):
 
 def remove_employee_from_project(request, project_id, user_id):
     project = get_object_or_404(Project, id=project_id)
-    query_set = set(project.assignees.all())
-    user = get_object_or_404(Account, id=user_id)
-    if user in query_set:
-        project.assignees.remove(user)
-        project.save()
-    url = reverse('edit_project', kwargs={'pk': project_id})
-    return redirect(url)
+    if request.user.is_project_manager() and project.project_manager.project_manager.id == request.user.id:
+        query_set = set(project.assignees.all())
+        user = get_object_or_404(Account, id=user_id)
+        if user in query_set:
+            # Assign all the tickets for that user to the project Manager:
+            Task.objects.filter(project__id=project.id, assignee__id=user.id).update(assignee=request.user)
+            project.assignees.remove(user)
+            project.save()
+        url = reverse('edit_project', kwargs={'pk': project_id})
+        return redirect(url)
+    else:
+        return HttpResponse("You can not have permission to remove this person from the project")
 
 
 def add_employee_to_project(request, project_id, user_id):
-    project = get_object_or_404(Project, id=project_id)
-    query_set = set(project.assignees.all())
-    user = get_object_or_404(Account, id=user_id)
-    if user not in query_set:
-        project.assignees.add(user)
-        project.save()
-    url = reverse('edit_project', kwargs={'pk': project_id})
-    return redirect(url)
+    if request.user.is_project_manager():
+        project = get_object_or_404(Project, id=project_id)
+        query_set = set(project.assignees.all())
+        user = get_object_or_404(Account, id=user_id)
+        if user not in query_set:
+            project.assignees.add(user)
+            project.save()
+        url = reverse('edit_project', kwargs={'pk': project_id})
+        return redirect(url)
+    else:
+        return HttpResponse("You can not have permission to add this person to the project")
+
 
 
