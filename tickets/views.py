@@ -18,12 +18,39 @@ def manage_ticket(request):
             'task_type_choice': task_type_choices,
             'priority_choice': priority_field,
         }
-        all_task = get_all_tickets_project_manager(request.user)
-        if len(request.GET)>0:
-            pass
-        else:
-            all_task = all_task.order_by('-start_date')
-            context['tasks'] = all_task
+        all_task_query = get_all_tickets_project_manager(request.user)
+        query_dic = request.GET
+
+        if 'project_id' in query_dic:
+            if query_dic['project_id'] != '' and len(all_task_query) > 0:
+                all_task_query = all_task_query.filter(project__id=int(query_dic['project_id']))
+
+        if 'assignee_id' in query_dic:
+            if query_dic['assignee_id'] != '' and len(all_task_query) > 0:
+                all_task_query = all_task_query.filter(assignee__id=int(query_dic['assignee_id']))
+
+        if 'task_type' in query_dic:
+            if query_dic['task_type'] != '' and len(all_task_query) > 0:
+                all_task_query = all_task_query.filter(task_type=query_dic['task_type'])
+
+        if 'priority' in query_dic:
+            if query_dic['priority'] != '' and len(all_task_query) > 0:
+                all_task_query = all_task_query.filter(priority=query_dic['priority'])
+
+        if 'status' in query_dic:
+            if query_dic['status'] != '' and len(all_task_query) > 0:
+                all_task_query = all_task_query.filter(status=query_dic['status'])
+
+        all_task_query = all_task_query.order_by('-start_date')
+        if 'order_by' in query_dic:
+            if int(query_dic['order_by']) == 2:
+                all_task_query = all_task_query.order_by('start_date')
+            if int(query_dic['order_by']) == 3:
+                all_task_query = all_task_query.order_by('estimated_end_date')
+            if int(query_dic['order_by']) == 4:
+                all_task_query = all_task_query.order_by('-estimated_end_date')
+
+        context['tasks'] = all_task_query
 
     return render(request, 'manage_ticket.html', context)
 
@@ -101,7 +128,7 @@ def get_all_tickets_project_manager(user):
         project_1 = projects[0]
         all_tickets = Task.objects.filter(project__id=project_1.id)
         for i in range(1, len(projects)):
-            all_tickets = all_tickets.union(Task.objects.filter(project__id=projects[i].id))
+            all_tickets = all_tickets | Task.objects.filter(project__id=projects[i].id)
         return all_tickets
     return None
 

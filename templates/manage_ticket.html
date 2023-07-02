@@ -6,14 +6,24 @@
     <div class="card mx-auto">
       <article class="card-body">
 		<header class="text-success"><h4><strong class="card-title">Get Tickets</strong></h4></header>
-		<form action = "#" method="GET">
-				{% csrf_token %}
-				<div class="form-group row">
 
+		<form action = "{% url 'manage_ticket' %}" method="GET">
+
+				<div class="form-group row">
 					<div class="col form-group" style="">
 			            <label class="text-success" for=""></label>
                         	<button class="btn btn-dark form-control" href="#"><strong>Filter</strong></button>
             		</div>
+					<div class="col form-group">
+							<label class="text-success" for="">Time Ordering</label>
+							<select class="form-select" name="order_by">
+							  <option value="1" selected>New One</option>
+							  <option value="2">Old One</option>
+							  <option value="3">End date</option>
+							  <option value="4">- End Date</option>
+							</select>
+				</div> <!-- form-row end.// -->
+
 
 					<div class="col form-group">
 						<label class="text-success" for="project_id">Project Name:</label>
@@ -64,8 +74,6 @@
 						{% endfor %}
 						</select>
 					</div> <!-- form-group end.// -->
-
-				</div> <!-- form-row end.// -->
 		</form>
 		</article><!-- card-body.// -->
     </div> <!-- card .// -->
