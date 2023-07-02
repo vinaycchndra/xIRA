@@ -1,20 +1,21 @@
 from django.db import models
 from projects.models import Project
 from accounts.models import Account
+import datetime
 
-status_field = (('back-log', 'Backlog'),
-                ('open', 'Open'),
-                ('in-progress', 'In Progress'),
-                ('complete', 'Complete'),
+status_field = (('Backlog', 'Backlog'),
+                ('Open', 'Open'),
+                ('In Progress', 'In Progress'),
+                ('Complete', 'Complete'),
                 )
 
-priority_field = (('high', 'High'),
-                  ('medium', 'Medium'),
-                  ('low', 'Low'),
-                  ('lowest', 'Lowest'),
+priority_field = (('High', 'High'),
+                  ('Medium', 'Medium'),
+                  ('Low', 'Low'),
+                  ('Lowest', 'Lowest'),
                   )
 
-task_type_choices=(('bug', 'Bug'), ('new task', 'New Task'))
+task_type_choices=(('Bug', 'Bug'), ('New Task', 'New Task'))
 
 
 class Task(models.Model):
@@ -30,3 +31,21 @@ class Task(models.Model):
 
     def __str__(self):
         return self.short_summary
+
+    # Look for task as backlog
+    def task_as_back_log(self):
+        current_time = datetime.datetime.now().astimezone()
+        estimated_end_date = self.estimated_end_date.astimezone()
+        if self.status == 'Complete':
+            return False
+        if current_time >= estimated_end_date:
+            self.status = 'Backlog'
+            self.save()
+            return True
+        else:
+            return False
+
+
+
+
+

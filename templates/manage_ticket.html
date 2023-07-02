@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% load tz %}
 <div class="container mt-4">
     <div class="card mx-auto">
       <article class="card-body">
@@ -81,14 +81,14 @@
 
 <div class="container mt-4">
 	{% for task in tasks %}
-	<div class="alert alert-primary" role="alert">
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
 
 		<strong class="text-muted"> Assigned To: </strong>
 		{{task.assignee}}
 		<strong class="text-muted">| Project: </strong>
 		{{task.project}}
 		<strong class="text-muted">| Status: </strong>
-	    {{task.status}}
+	    {{task.status|capfirst}}
 	 	<strong class="text-muted">| Priority: </strong>
 	    {{task.priority}}
 		<strong class="text-muted">| Type: </strong>
@@ -98,11 +98,11 @@
 	 	<hr>
 	 	<p>{{task.description}}</p>
 	 	<hr>
-	<strong class="text-muted">| Created On: </strong>
-	 {{task.start_date}}
+	<strong class="text-muted"> Created On: </strong>
+	 {{task.start_date|timezone:"Asia/Kolkata"}}
 
 	<strong class="text-muted">| Completion Deadline: </strong>
-	 {{task.estimated_end_date}}
+	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
 
  	</div>
 	{% endfor %}

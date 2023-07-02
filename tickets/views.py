@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from projects.models import Project
 from .models import Task
 from .models import status_field, task_type_choices, priority_field
+import datetime
 
 
 def manage_ticket(request):
@@ -42,6 +43,7 @@ def manage_ticket(request):
                 all_task_query = all_task_query.filter(status=query_dic['status'])
 
         all_task_query = all_task_query.order_by('-start_date')
+
         if 'order_by' in query_dic:
             if int(query_dic['order_by']) == 2:
                 all_task_query = all_task_query.order_by('start_date')
@@ -51,13 +53,11 @@ def manage_ticket(request):
                 all_task_query = all_task_query.order_by('-estimated_end_date')
 
         context['tasks'] = all_task_query
-
     return render(request, 'manage_ticket.html', context)
 
 
 def create_ticket(request, project_id=None):
     context = {
-
     }
     if request.user.is_project_manager():
         if request.method == 'GET':
@@ -85,6 +85,7 @@ def create_ticket(request, project_id=None):
                 task_type = form.cleaned_data['task_type']
                 status = form.cleaned_data['status']
                 estimated_end_date = form.cleaned_data['estimated_end_date']
+                estimated_end_date = estimated_end_date - datetime.timedelta(hours=5, minutes=30)
                 description = form.cleaned_data['description']
                 short_summary = form.cleaned_data['short_summary']
                 priority = form.cleaned_data['priority']
