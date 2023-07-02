@@ -82,14 +82,28 @@
 <div class="container mt-4">
 	{% for task in tasks %}
 	<div class="alert alert-primary" role="alert">
-	 <strong>{{task.assignee}}</strong>
-	 <strong class="text-muted">| {{task.project}}</strong>
-	 <strong class="text-muted">| {{task.status}}</strong>
-	 <strong class="text-muted">| {{task.priority}}</strong>
-	 <strong class="text-muted">| {{task.task_type}}</strong>
-	 <small class="text-muted">| ({{task.short_summary}})</small>
-	 <hr>
-	 <p>{{task.description}}</p>
+
+		<strong class="text-muted"> Assigned To: </strong>
+		{{task.assignee}}
+		<strong class="text-muted">| Project: </strong>
+		{{task.project}}
+		<strong class="text-muted">| Status: </strong>
+	    {{task.status}}
+	 	<strong class="text-muted">| Priority: </strong>
+	    {{task.priority}}
+		<strong class="text-muted">| Type: </strong>
+	    {{task.task_type}}
+		<strong class="text-muted">| Summary: </strong>
+	    {{task.short_summary}}
+	 	<hr>
+	 	<p>{{task.description}}</p>
+	 	<hr>
+	<strong class="text-muted">| Created On: </strong>
+	 {{task.start_date}}
+
+	<strong class="text-muted">| Completion Deadline: </strong>
+	 {{task.estimated_end_date}}
+
  	</div>
 	{% endfor %}
 
