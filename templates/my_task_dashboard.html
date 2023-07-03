@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load tz %}
+<div class="container mt-4">
+    <div class="card mx-auto">
+      <article class="card-body">
+		  {% include 'includes/alerts.html' %}
+		<header class="text-success"><h4><strong class="card-title">My Tickets</strong></h4></header>
+
+		<form action = "{% url 'manage_ticket' %}" method="GET">
+
+				<div class="form-group row">
+					<div class="col form-group" style="">
+			            <label class="text-success" for=""></label>
+                        	<button class="btn btn-dark form-control" href="#"><strong>Filter</strong></button>
+            		</div>
+					<div class="col form-group">
+							<label class="text-success" for="">Time Ordering</label>
+							<select class="form-select" name="order_by">
+							  <option value="1" selected>New One</option>
+							  <option value="2">Old One</option>
+							  <option value="3">End date</option>
+							  <option value="4">- End Date</option>
+							</select>
+				</div> <!-- form-row end.// -->
+
+
+					<div class="col form-group">
+						<label class="text-success" for="project_id">Project Name:</label>
+						<select class="form-control" name="project_id">
+						<option value="">----Choose----</option>
+						{% for choice in project_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Task Type:</label>
+						<select class="form-control" name="task_type">
+						<option value="">----Choose----</option>
+						{% for choice in task_type_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Priority:</label>
+						<select class="form-control" name="priority">
+						<option value="">----Choose----</option>
+						{% for choice in priority_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div> <!-- form-group end.// -->
+
+					<div class="col form-group">
+			            <label class="text-success" for="">Status:</label>
+						<select class="form-control" name="status">
+						<option value="">----Choose----</option>
+						{% for choice in status_choice %}
+							<option value="{{choice.0}}">{{choice.1}}</option>
+						{% endfor %}
+						</select>
+					</div> <!-- form-group end.// -->
+		</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+</div>
+<a href="#"  style="text-decoration: none;">
+<div class="container mt-4">
+	{% for task in tickets %}
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+
+		<strong class="text-muted"> Project: </strong>
+		{{task.project}}
+		<strong class="text-muted">| Status: </strong>
+	    {{task.status|capfirst}}
+	 	<strong class="text-muted">| Priority: </strong>
+	    {{task.priority}}
+		<strong class="text-muted">| Type: </strong>
+	    {{task.task_type}}
+		<strong class="text-muted">| Summary: </strong>
+	    {{task.short_summary}}
+	 	<hr>
+	 	<p>{{task.description}}</p>
+	 	<hr>
+	<strong class="text-muted"> Created On: </strong>
+	 {{task.start_date|timezone:"Asia/Kolkata"}}
+
+	<strong class="text-muted">| Completion Deadline: </strong>
+	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
+
+	</div>
+	{% endfor %}
+
+
+</div>
+	</a>
+</div>
+
+{% endblock %}

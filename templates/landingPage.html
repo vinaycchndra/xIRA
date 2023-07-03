@@ -4,7 +4,7 @@
 <div class="container mt-4">
  <div class="row">
     <div class="col-sm-3" style="">
-      <div class="card">
+      <div class="card bg bg-light">
     <div class="card-body text-center">
       <a href="{% url 'dashboard' %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>All Projects</strong></a>
     <hr>
@@ -12,7 +12,7 @@
       <a href="{% url 'dashboard' request.user.id %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>My Projects</strong></a>
 
     <hr>
-      <a href="#" class="btn btn-outline-success"  style="text-decoration: none"><strong>See Tickets</strong></a>
+      <a href="{% url 'user_ticket_dashboard' %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>My Tickets</strong></a>
 
     </div>
       </div>
@@ -25,8 +25,8 @@
         <div class="card">
   <div class="card">
     <div class="card-body">
-    <table class="table caption-top" style="position: relative;height: 520px;overflow: auto;display: block;" id="project_table">
-  <caption><h3 class="text-dark text-center"><strong>Projects List</strong></h3></caption>
+    <table class="table table-light caption-top" style="position: relative;height: 560px;overflow: auto;display: block;" id="project_table">
+  <caption><h3 class="text-success text-center"><strong>Projects List</strong></h3></caption>
   <thead>
     <tr>
       <th scope="col">No.</th>

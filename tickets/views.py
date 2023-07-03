@@ -7,9 +7,9 @@ from projects.models import Project
 from .models import Task
 from .models import status_field, task_type_choices, priority_field
 import datetime
-from django import forms
 
 
+# Manager Accessible function
 def manage_ticket(request):
     if request.user.is_project_manager():
         project_coice_tuple_list, assignee_choice_tuple_list = get_choice_fields(request.user)
@@ -57,6 +57,7 @@ def manage_ticket(request):
     return render(request, 'manage_ticket.html', context)
 
 
+# Manager Accessible function
 def create_ticket(request, project_id=None):
     context = {
     }
@@ -111,6 +112,7 @@ def create_ticket(request, project_id=None):
     return HttpResponse("You do not have permission to create Tasks")
 
 
+# Manager Accessible function
 def edit_ticket(request, ticket_id=None):
     ticket = get_object_or_404(Task, id=ticket_id)
     if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id == request.user.id:
@@ -149,6 +151,7 @@ def edit_ticket(request, ticket_id=None):
                 return render(request, 'edit_manager_task.html', context)
 
 
+# Manager Accessible function
 def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(Task, id=ticket_id)
     if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
@@ -156,6 +159,21 @@ def delete_ticket(request, ticket_id):
         messages.success(request, 'Ticket deleted successfully')
         return redirect('manage_ticket')
     return HttpResponse("You do not have permission to create Tasks")
+
+
+# User Accessbile function
+def user_manage_ticket(request):
+    user_object = Account.objects.get(id=request.user.id)
+    projects = user_object.project_set.all()
+    tickets = Task.objects.filter(assignee__id=request.user.id)
+    context = {
+        'project_choice': projects,
+        'tickets': tickets,
+        'status_choice': status_field,
+        'task_type_choice': task_type_choices,
+        'priority_choice': priority_field,
+    }
+    return render(request, 'my_task_dashboard.html', context)
 
 
 def all_assignees_for_the_project(user, project_id):

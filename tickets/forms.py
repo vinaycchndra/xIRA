@@ -26,3 +26,5 @@ class CreateTicketForm(forms.ModelForm):
 
 class DateForm(forms.Form):
     date_field = forms.DateTimeField()
+
+
