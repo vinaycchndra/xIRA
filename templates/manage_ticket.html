@@ -105,8 +105,9 @@
 	<strong class="text-muted">| Completion Deadline: </strong>
 	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
 
-	<a class="text-dark" href="{% url 'delete_ticket' task.id %}" style="text-decoration: none;"><strong> (Delete)</strong></a>
- 	</div>
+	<a class="text-dark" href="{% url 'delete_ticket' task.id %}" style="text-decoration: none;"><strong> (Delete) -</strong></a>
+ 	<a class="text-dark" href="{% url 'edit_ticket' task.id %}" style="text-decoration: none;"><strong> (Edit)</strong></a>
+	</div>
 	{% endfor %}
 
 

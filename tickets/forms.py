@@ -24,5 +24,5 @@ class CreateTicketForm(forms.ModelForm):
         return estimated_end_date
 
 
-
-
+class DateForm(forms.Form):
+    date_field = forms.DateTimeField()

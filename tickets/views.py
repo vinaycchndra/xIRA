@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse, reverse
 from django.contrib import messages
 from accounts.models import ProjectManager, Account
-from .forms import CreateTicketForm
+from .forms import CreateTicketForm, DateForm
 from django.shortcuts import get_object_or_404
 from projects.models import Project
 from .models import Task
 from .models import status_field, task_type_choices, priority_field
 import datetime
+from django import forms
 
 
 def manage_ticket(request):
@@ -110,6 +111,44 @@ def create_ticket(request, project_id=None):
     return HttpResponse("You do not have permission to create Tasks")
 
 
+def edit_ticket(request, ticket_id=None):
+    ticket = get_object_or_404(Task, id=ticket_id)
+    if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id == request.user.id:
+        project_choice, assignee_choice = all_assignees_for_the_project(request.user, ticket.project.id)
+        context = {
+
+        }
+        date_form = DateForm()
+        date_form.fields['date_field'].initial = ticket.estimated_end_date + datetime.timedelta(hours=5, minutes=30)
+        context['estimated_date_form'] = date_form
+        context['project_choice'] = project_choice[0]
+        context['assignee_choice'] = assignee_choice
+        context['task'] = ticket
+        if request.method == 'GET':
+            form = CreateTicketForm(instance=ticket)
+            context['form'] = form
+            return render(request, 'edit_manager_task.html', context)
+        else:
+            form = CreateTicketForm(request.POST)
+            if form.is_valid():
+                ticket.task_type = form.cleaned_data['task_type']
+                ticket.status = 'Open'
+                ticket.estimated_end_date = form.cleaned_data['estimated_end_date']
+                ticket.description = form.cleaned_data['description']
+                ticket.short_summary = form.cleaned_data['short_summary']
+                ticket.priority = form.cleaned_data['priority']
+                assignee_object = Account.objects.get(id=request.POST['assignee_id'])
+                ticket.assignee = assignee_object
+                ticket.save()
+                messages.success(request, 'Successfully updated task')
+                return redirect('manage_ticket')
+            else:
+                context['form'] = form
+                for key, value in form.errors.as_data().items():
+                    messages.error(request,  key+": "+str(value[0]))
+                return render(request, 'edit_manager_task.html', context)
+
+
 def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(Task, id=ticket_id)
     if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
@@ -117,11 +156,6 @@ def delete_ticket(request, ticket_id):
         messages.success(request, 'Ticket deleted successfully')
         return redirect('manage_ticket')
     return HttpResponse("You do not have permission to create Tasks")
-
-
-
-
-
 
 
 def all_assignees_for_the_project(user, project_id):
