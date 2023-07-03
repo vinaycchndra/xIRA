@@ -5,6 +5,7 @@
 <div class="container mt-4">
     <div class="card mx-auto">
       <article class="card-body">
+		  {% include 'includes/alerts.html' %}
 		<header class="text-success"><h4><strong class="card-title">Get Tickets</strong></h4></header>
 
 		<form action = "{% url 'manage_ticket' %}" method="GET">
@@ -104,6 +105,7 @@
 	<strong class="text-muted">| Completion Deadline: </strong>
 	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
 
+	<a class="text-dark" href="{% url 'delete_ticket' task.id %}" style="text-decoration: none;"><strong> (Delete)</strong></a>
  	</div>
 	{% endfor %}
 

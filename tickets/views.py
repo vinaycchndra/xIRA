@@ -86,7 +86,7 @@ def create_ticket(request, project_id=None):
 
             if form.is_valid():
                 task_type = form.cleaned_data['task_type']
-                status = form.cleaned_data['status']
+                status = 'Open'
                 estimated_end_date = form.cleaned_data['estimated_end_date']
                 description = form.cleaned_data['description']
                 short_summary = form.cleaned_data['short_summary']
@@ -108,6 +108,20 @@ def create_ticket(request, project_id=None):
                     messages.error(request,  key+": "+str(value[0]))
         return render(request, 'tasks.html', context)
     return HttpResponse("You do not have permission to create Tasks")
+
+
+def delete_ticket(request, ticket_id):
+    ticket = get_object_or_404(Task, id=ticket_id)
+    if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
+        ticket.delete()
+        messages.success(request, 'Ticket deleted successfully')
+        return redirect('manage_ticket')
+    return HttpResponse("You do not have permission to create Tasks")
+
+
+
+
+
 
 
 def all_assignees_for_the_project(user, project_id):
