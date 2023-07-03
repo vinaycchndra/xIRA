@@ -80,12 +80,14 @@ def create_ticket(request, project_id=None):
             else:
                 get_project = get_object_or_404(Project, id=request.POST['project_id'])
                 get_assignee = get_object_or_404(Account, id=request.POST['assignee_id'])
+                project_choice, assignee_choice = all_assignees_for_the_project(request.user, get_project.id)
+                context['project_choice'] = project_choice[0]
+                context['assignee_choice'] = assignee_choice
 
             if form.is_valid():
                 task_type = form.cleaned_data['task_type']
                 status = form.cleaned_data['status']
                 estimated_end_date = form.cleaned_data['estimated_end_date']
-                estimated_end_date = estimated_end_date - datetime.timedelta(hours=5, minutes=30)
                 description = form.cleaned_data['description']
                 short_summary = form.cleaned_data['short_summary']
                 priority = form.cleaned_data['priority']
