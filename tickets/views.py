@@ -165,14 +165,43 @@ def delete_ticket(request, ticket_id):
 def user_manage_ticket(request):
     user_object = Account.objects.get(id=request.user.id)
     projects = user_object.project_set.all()
-    tickets = Task.objects.filter(assignee__id=request.user.id)
+    project_choice = [(project.id, project.project_name) for project in projects]
+    all_task_query = Task.objects.filter(assignee__id=request.user.id)
     context = {
-        'project_choice': projects,
-        'tickets': tickets,
+        'project_choice': project_choice,
         'status_choice': status_field,
         'task_type_choice': task_type_choices,
         'priority_choice': priority_field,
     }
+
+    query_dic = request.GET
+    if 'project_id' in query_dic:
+        if query_dic['project_id'] != '' and len(all_task_query) > 0:
+            all_task_query = all_task_query.filter(project__id=int(query_dic['project_id']))
+
+    if 'task_type' in query_dic:
+        if query_dic['task_type'] != '' and len(all_task_query) > 0:
+            all_task_query = all_task_query.filter(task_type=query_dic['task_type'])
+
+    if 'priority' in query_dic:
+        if query_dic['priority'] != '' and len(all_task_query) > 0:
+            all_task_query = all_task_query.filter(priority=query_dic['priority'])
+
+    if 'status' in query_dic:
+        if query_dic['status'] != '' and len(all_task_query) > 0:
+            all_task_query = all_task_query.filter(status=query_dic['status'])
+
+    all_task_query = all_task_query.order_by('-start_date')
+
+    if 'order_by' in query_dic:
+        if int(query_dic['order_by']) == 2:
+            all_task_query = all_task_query.order_by('start_date')
+        if int(query_dic['order_by']) == 3:
+            all_task_query = all_task_query.order_by('estimated_end_date')
+        if int(query_dic['order_by']) == 4:
+            all_task_query = all_task_query.order_by('-estimated_end_date')
+
+    context['tickets'] = all_task_query
     return render(request, 'my_task_dashboard.html', context)
 
 
