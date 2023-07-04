@@ -3,7 +3,28 @@
 {% block content %}
 {% load tz %}
 <div class="container mt-4">
-    <div class="card mx-auto">
+ <div class="row">
+		<div class="col-sm-3" style="">
+		  <div class="card bg bg-light" style="border: 1px solid black;">
+		<div class="card-body text-center">
+		  <a href="{% url 'dashboard' %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>All Projects</strong></a>
+		<hr>
+
+		  <a href="{% url 'dashboard' request.user.id %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>My Projects</strong></a>
+
+		<hr>
+		  <a href="{% url 'user_ticket_dashboard' %}" class="btn btn-outline-success"  style="text-decoration: none"><strong>My Tickets</strong></a>
+		</div>
+		  </div>
+		</div>
+
+
+<div class="col-lg">
+	<div class="card  bg-light" style="border: 1px solid black;">
+
+{% load tz %}
+<div class="container mt-2">
+    <div class="card bg-light border-0" >
       <article class="card-body">
 		  {% include 'includes/alerts.html' %}
 		<header class="text-success"><h4><strong class="card-title">My Tickets</strong></h4></header>
@@ -100,5 +121,21 @@
 </div>
 	</a>
 </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+		</div>
+
+</div>
+
+
+</div>
+
 
 {% endblock %}
