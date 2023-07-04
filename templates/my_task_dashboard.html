@@ -3,7 +3,8 @@
 {% block content %}
 {% load tz %}
 <div class="container mt-4">
- <div class="row">
+
+	<div class="row">
 		<div class="col-sm-3" style="">
 		  <div class="card bg bg-light" style="border: 1px solid black;">
 		<div class="card-body text-center">
@@ -90,11 +91,15 @@
 		</article><!-- card-body.// -->
     </div> <!-- card .// -->
 </div>
-<a href="#"  style="text-decoration: none;">
+
+
+
+
 <div class="container mt-4">
 	{% for task in tickets %}
-	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+	<a class="nav-link" type="button"  data-bs-toggle="modal" data-bs-target="#{{task.id}}" style="text-decoration: none;">
 
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
 		<strong class="text-muted"> Project: </strong>
 		{{task.project}}
 		<strong class="text-muted">| Status: </strong>
@@ -115,27 +120,43 @@
 	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
 
 	</div>
+	</a>
+
+			<div class="modal fade" id="{{task.id}}" tabindex="-1" aria-labelledby="projectCreationLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content" style="border: 1px solid black;" >
+			  <div class="modal-header">
+				<h4 class="modal-title text-success" id="{{task.project}}Label">{{task.project}}</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+						  <div class="modal-body">
+							  <form action="{% url 'create_project' %}" method="POST">
+								  {% csrf_token %}
+								  <label class="text-success" for="">Update Status:</label>
+								  <div class="form-row">
+									{{project_creation_form.project_name}}
+								  </div>
+								  <br>
+								  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+								  <button type="submit" class="btn btn-dark">Create</button>
+						   </form>
+				</div>
+			</div>
+		  </div>
+		</div>
 	{% endfor %}
 
 
 </div>
-	</a>
+
 </div>
     </div>
 </div>
-
-
-
-
-
-
-
-		</div>
-
+</div>
+</div>
 </div>
 
 
-</div>
 
 
 {% endblock %}
