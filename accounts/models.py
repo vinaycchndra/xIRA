@@ -105,3 +105,11 @@ class Information(models.Model):
     is_seen = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def is_not_seen(self):
+        if self.is_seen == False:
+            self.is_seen = True
+            self.save()
+            return True
+        else:
+            return False
+

@@ -24,7 +24,7 @@
 
     <div class="col-lg" style="">
         {% for notify in notification %}
-        <div class="card mt-4 bg-seondary"  style="border: 2px solid black;">
+        <div class="card mt-4 {% if notify.is_not_seen %} bg-secondary {% endif %}"  style="border: 2px solid black;">
         <div class="card-body">
            <strong> {{forloop.counter}})- </strong>{{notify.notification}}
         </div>
