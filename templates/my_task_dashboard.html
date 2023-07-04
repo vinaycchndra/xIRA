@@ -97,8 +97,8 @@
 
 <div class="container mt-4">
 	{% for task in tickets %}
+	{% if task.status != 'Complete' %}
 	<a class="nav-link" type="button"  data-bs-toggle="modal" data-bs-target="#{{task.id}}" style="text-decoration: none;">
-
 	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
 		<strong class="text-muted"> Project: </strong>
 		{{task.project}}
@@ -130,25 +130,47 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			  </div>
 						  <div class="modal-body">
-							  <form action="{% url 'create_project' %}" method="POST">
+							  <form action="{% url 'user_update_status' task.id %}" method="POST">
 								  {% csrf_token %}
 								  <div class="form-group row">
 									  <label class="text-success" for=""><strong>Update Status:</strong></label>
-											<select class="form-control" name="priority">
-												<option value="">----Choose----</option>
-												{% for choice in priority_choice %}
-													<option value="{{choice.0}}">{{choice.1}}</option>
-												{% endfor %}
+											<select class="form-control" name="status">
+												<option value="" >----Choose----</option>
+												<option value="{{task.get_status_choices.0}}">{{task.get_status_choices.1}}</option>
+
 											</select>
 								  </div> <!-- form-row.// -->
 								  <br>
 								  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
-								  <button type="submit" class="btn btn-dark">Create</button>
+								  <button type="submit" class="btn btn-dark">Update</button>
 						   </form>
 				</div>
 			</div>
 		  </div>
 		</div>
+	{% else %}
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+		<strong class="text-muted"> Project: </strong>
+		{{task.project}}
+		<strong class="text-muted">| Status: </strong>
+	    {{task.status|capfirst}}
+	 	<strong class="text-muted">| Priority: </strong>
+	    {{task.priority}}
+		<strong class="text-muted">| Type: </strong>
+	    {{task.task_type}}
+		<strong class="text-muted">| Summary: </strong>
+	    {{task.short_summary}}
+	 	<hr>
+	 	<p>{{task.description}}</p>
+	 	<hr>
+	<strong class="text-muted"> Created On: </strong>
+	 {{task.start_date|timezone:"Asia/Kolkata"}}
+
+	<strong class="text-muted">| Completion Deadline: </strong>
+	 {{task.estimated_end_date|timezone:"Asia/Kolkata"}}
+
+	</div>
+	{% endif %}
 	{% endfor %}
 
 

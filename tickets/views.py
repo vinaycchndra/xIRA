@@ -205,6 +205,23 @@ def user_manage_ticket(request):
     return render(request, 'my_task_dashboard.html', context)
 
 
+# User Update Ticket view
+def update_status(request, ticket_id):
+    print(request.POST)
+    if request.method == 'POST':
+        try:
+            task = Task.objects.get(id=ticket_id, assignee__id=request.user.id)
+        except Task.DoesNotExist:
+            return HttpResponse("Not Found", status=404)
+        if request.POST['status'] != '':
+            task.status = request.POST['status']
+            task.save()
+            messages.success(request, "Ticket Status Changes Successfully")
+        return redirect('user_ticket_dashboard')
+
+    return HttpResponse('Not Allowed This Way to change the status!!!')
+
+
 def all_assignees_for_the_project(user, project_id):
     project_manager = ProjectManager.objects.get(project_manager__id=user.id)
     projects = project_manager.get_all_project().values_list('id', flat=True)

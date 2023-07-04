@@ -45,6 +45,14 @@ class Task(models.Model):
         else:
             return False
 
+    def get_status_choices(self):
+        status = self.status
+        if status == 'Open':
+            return 'In progress', 'In progress'
+        else:
+            return 'Complete', 'Complete'
+
+
 
 
 
