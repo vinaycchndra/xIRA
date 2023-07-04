@@ -126,16 +126,21 @@
 		  <div class="modal-dialog">
 			<div class="modal-content" style="border: 1px solid black;" >
 			  <div class="modal-header">
-				<h4 class="modal-title text-success" id="{{task.project}}Label">{{task.project}}</h4>
+				<h4 class="modal-title text-success" id="{{task.project}}Label">{{task.status}}</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			  </div>
 						  <div class="modal-body">
 							  <form action="{% url 'create_project' %}" method="POST">
 								  {% csrf_token %}
-								  <label class="text-success" for="">Update Status:</label>
-								  <div class="form-row">
-									{{project_creation_form.project_name}}
-								  </div>
+								  <div class="form-group row">
+									  <label class="text-success" for=""><strong>Update Status:</strong></label>
+											<select class="form-control" name="priority">
+												<option value="">----Choose----</option>
+												{% for choice in priority_choice %}
+													<option value="{{choice.0}}">{{choice.1}}</option>
+												{% endfor %}
+											</select>
+								  </div> <!-- form-row.// -->
 								  <br>
 								  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
 								  <button type="submit" class="btn btn-dark">Create</button>
