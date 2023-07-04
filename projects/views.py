@@ -6,6 +6,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.db.models import Q
 from tickets.models import Task
+from accounts.views import push_notification
 
 
 def create_project(request):
@@ -95,7 +96,9 @@ def remove_employee_from_project(request, project_id, user_id):
             # Assign all the tickets for that user to the project Manager:
             Task.objects.filter(project__id=project.id, assignee__id=user.id).update(assignee=request.user)
             project.assignees.remove(user)
+            user_message = """You Have Been Removed From "{}" """.format(project.project_name)
             project.save()
+            push_notification(user, user_message)
         url = reverse('edit_project', kwargs={'pk': project_id})
         return redirect(url)
     else:
@@ -110,6 +113,8 @@ def add_employee_to_project(request, project_id, user_id):
         if user not in query_set:
             project.assignees.add(user)
             project.save()
+            user_message = """You Have Been Added To "{}" """.format(project.project_name)
+            push_notification(user, user_message)
         url = reverse('edit_project', kwargs={'pk': project_id})
         return redirect(url)
     else:

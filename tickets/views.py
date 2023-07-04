@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse, reverse
 from django.contrib import messages
-from accounts.models import ProjectManager, Account
+from accounts.models import ProjectManager, Account, Information
 from .forms import CreateTicketForm, DateForm
 from django.shortcuts import get_object_or_404
 from projects.models import Project
 from .models import Task
 from .models import status_field, task_type_choices, priority_field
 import datetime
+from accounts.views import push_notification
 
 
 # Manager Accessible function
@@ -103,6 +104,8 @@ def create_ticket(request, project_id=None):
                                            assignee=get_assignee,
                                            )
                 task.save()
+                user_message = """A ticket is assigned to you in Project: "{}" """.format(task.project.project_name)
+                push_notification(task.assignee, user_message)
                 messages.success(request, 'Successfully assigned to '+task.assignee.first_name)
                 return redirect('manage_ticket')
             else:
@@ -142,6 +145,8 @@ def edit_ticket(request, ticket_id=None):
                 assignee_object = Account.objects.get(id=request.POST['assignee_id'])
                 ticket.assignee = assignee_object
                 ticket.save()
+                user_message = """Ticket assigned to you in Project: "{}" is updated""".format(ticket.project.project_name)
+                push_notification(ticket.assignee, user_message)
                 messages.success(request, 'Successfully updated task')
                 return redirect('manage_ticket')
             else:
@@ -156,6 +161,8 @@ def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(Task, id=ticket_id)
     if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
         ticket.delete()
+        user_message = """Ticket assigned to you in Project: "{}" is deleted""".format(ticket.project.project_name)
+        push_notification(ticket.assignee, user_message)
         messages.success(request, 'Ticket deleted successfully')
         return redirect('manage_ticket')
     return HttpResponse("You do not have permission to create Tasks")
@@ -207,7 +214,6 @@ def user_manage_ticket(request):
 
 # User Update Ticket view
 def update_status(request, ticket_id):
-    print(request.POST)
     if request.method == 'POST':
         try:
             task = Task.objects.get(id=ticket_id, assignee__id=request.user.id)
@@ -220,6 +226,14 @@ def update_status(request, ticket_id):
         return redirect('user_ticket_dashboard')
 
     return HttpResponse('Not Allowed This Way to change the status!!!')
+
+
+def get_notification(request):
+    notify = Information.objects.filter(user__id=request.user.id).order_by('-created_at')
+    context = {
+        'notification': notify,
+    }
+    return render(request, 'my_notifications.html', context)
 
 
 def all_assignees_for_the_project(user, project_id):

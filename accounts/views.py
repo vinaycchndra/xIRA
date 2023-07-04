@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
-from .models import Account
+from .models import Account, Information
 from .forms import RegistrationForm
 
 
@@ -53,3 +53,8 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'You are logged out')
     return redirect('login')
+
+
+def push_notification(user, message):
+    notify = Information.objects.create(user=user, notification=message)
+    notify.save()

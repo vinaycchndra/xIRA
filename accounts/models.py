@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+import datetime
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, work_email, password=None):
@@ -97,4 +97,11 @@ class ProjectManager(models.Model):
 
     def get_all_project(self):
         return self.project_set.all()
+
+
+class Information(models.Model):
+    notification = models.CharField(max_length=400)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    is_seen = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
