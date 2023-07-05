@@ -112,9 +112,18 @@
 
 <nav aria-label="Page navigation example">
 	  <ul class="pagination justify-content-end pagination-lg">
-		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			  {% for page_no in  tasks.paginator.page_range %}
+		{% if url %}
+		  	{% if tasks.has_previous %}
+		  		<li class="page-item"><a class="page-link" href="{{url}}&page={{tasks.previous_page_number}}">Previous</a></li>
+		  	{% endif %}
+		{%  else %}
+		  	{% if tasks.has_previous %}
+		  		<li class="page-item"><a class="page-link" href="?page={{tasks.previous_page_number}}">Previous</a></li>
+		  	{% endif %}
+		{% endif %}
 
+
+			  {% for page_no in tasks.paginator.page_range %}
 		  		{% if tasks.number == page_no %}
 					{% if url %}
 		  				<li class="page-item active"><a class="page-link" href="{{url}}&page={{page_no}}">{{page_no}}</a></li>
@@ -129,7 +138,15 @@
 		  			{% endif %}
 		  		{% endif %}
 		  	{% endfor %}
-		<li class="page-item"><a class="page-link" href="#">Next</a></li>
+		{% if url %}
+		  	{% if tasks.has_next %}
+		  		<li class="page-item"><a class="page-link" href="{{url}}&page={{tasks.next_page_number}}">Next</a></li>
+		  	{% endif %}
+		{%  else %}
+		  	{% if tasks.has_next %}
+		  		<li class="page-item"><a class="page-link" href="?page={{tasks.next_page_number}}">Next</a></li>
+		  	{% endif %}
+		{% endif %}
 	  </ul>
 </nav>
 
