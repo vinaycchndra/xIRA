@@ -8,10 +8,25 @@ from .models import Task
 from .models import status_field, task_type_choices, priority_field
 import datetime
 from accounts.views import push_notification
+from django.core.paginator import Paginator
 
 
 # Manager Accessible function
 def manage_ticket(request):
+    url = ""
+    count = 0
+    for j in request.GET:
+        if j != 'page':
+            count += 1
+    if count > 0:
+        url += "?"
+    for item in request.GET:
+        if item != 'page':
+            temp_url = item+"="+request.GET.get(item)+"&"
+            url += temp_url
+    if url[-1:] == "&":
+        url = url[:-1]
+    print(url)
     if request.user.is_project_manager():
         project_coice_tuple_list, assignee_choice_tuple_list = get_choice_fields(request.user)
         context = {
@@ -53,8 +68,17 @@ def manage_ticket(request):
                 all_task_query = all_task_query.order_by('estimated_end_date')
             if int(query_dic['order_by']) == 4:
                 all_task_query = all_task_query.order_by('-estimated_end_date')
-
+        print(request.GET)
+        page_no = request.GET.get('page')
+        page_object = Paginator(all_task_query, 3)
+        if page_no is None:
+            all_task_query = page_object.get_page(1)
+            print(all_task_query.number)
+        else:
+            all_task_query = page_object.get_page(page_no)
+            print(all_task_query.number)
         context['tasks'] = all_task_query
+        context['url'] = url
     return render(request, 'manage_ticket.html', context)
 
 

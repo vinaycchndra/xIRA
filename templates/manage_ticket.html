@@ -110,15 +110,33 @@
 	</div>
 	{% endfor %}
 
+<nav aria-label="Page navigation example">
+	  <ul class="pagination justify-content-end pagination-lg">
+		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+			  {% for page_no in  tasks.paginator.page_range %}
+
+		  		{% if tasks.number == page_no %}
+					{% if url %}
+		  				<li class="page-item active"><a class="page-link" href="{{url}}&page={{page_no}}">{{page_no}}</a></li>
+		  			{%  else %}
+		  				<li class="page-item active"><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+		  			{% endif %}
+		  		{% else %}
+					{% if url %}
+		  				<li class="page-item "><a class="page-link" href="{{url}}&page={{page_no}}">{{page_no}}</a></li>
+		  			{%  else %}
+		  				<li class="page-item "><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+		  			{% endif %}
+		  		{% endif %}
+		  	{% endfor %}
+		<li class="page-item"><a class="page-link" href="#">Next</a></li>
+	  </ul>
+</nav>
+
+
 
 </div>
 </div>
-
-
-
-
-
-
 
 
 
