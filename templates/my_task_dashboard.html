@@ -180,6 +180,51 @@
 
 </div>
 
+
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination justify-content-end pagination-sm px-3">
+		{% if url %}
+		  	{% if tickets.has_previous %}
+		  		<li class="page-item"><a class="page-link" href="{{url}}&page={{tickets.previous_page_number}}">Previous</a></li>
+		  	{% endif %}
+		{%  else %}
+		  	{% if tickets.has_previous %}
+		  		<li class="page-item"><a class="page-link" href="?page={{tickets.previous_page_number}}">Previous</a></li>
+		  	{% endif %}
+		{% endif %}
+
+
+			  {% for page_no in tickets.paginator.page_range %}
+		  		{% if tickets.number == page_no %}
+					{% if url %}
+		  				<li class="page-item active"><a class="page-link" href="{{url}}&page={{page_no}}">{{page_no}}</a></li>
+		  			{%  else %}
+		  				<li class="page-item active"><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+		  			{% endif %}
+		  		{% else %}
+					{% if url %}
+		  				<li class="page-item "><a class="page-link" href="{{url}}&page={{page_no}}">{{page_no}}</a></li>
+		  			{%  else %}
+		  				<li class="page-item "><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+		  			{% endif %}
+		  		{% endif %}
+		  	{% endfor %}
+		{% if url %}
+		  	{% if tickets.has_next %}
+		  		<li class="page-item"><a class="page-link" href="{{url}}&page={{tickets.next_page_number}}">Next</a></li>
+		  	{% endif %}
+		{%  else %}
+		  	{% if tickets.has_next %}
+		  		<li class="page-item"><a class="page-link" href="?page={{tickets.next_page_number}}">Next</a></li>
+		  	{% endif %}
+		{% endif %}
+	  </ul>
+</nav>
+
+
+
+
+
 </div>
     </div>
 </div>
