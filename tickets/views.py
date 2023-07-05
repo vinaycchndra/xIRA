@@ -219,7 +219,7 @@ def user_manage_ticket(request):
             all_task_query = all_task_query.order_by('-estimated_end_date')
 
     page_no = request.GET.get('page')
-    page_object = Paginator(all_task_query, 4)
+    page_object = Paginator(all_task_query, 6)
     if page_no is None:
         all_task_query = page_object.get_page(1)
     else:
@@ -249,6 +249,12 @@ def update_status(request, ticket_id):
 
 def get_notification(request):
     notify = Information.objects.filter(user__id=request.user.id).order_by('-created_at')
+    page_no = request.GET.get('page')
+    page_object = Paginator(notify, 8)
+    if page_no is None:
+        notify = page_object.get_page(1)
+    else:
+        notify = page_object.get_page(page_no)
     context = {
         'notification': notify,
     }
