@@ -11,4 +11,5 @@ urlpatterns = [
         path('see_ticket/', views.user_manage_ticket, name='user_ticket_dashboard'),
         path('update_status/<int:ticket_id>/', views.update_status, name='user_update_status'),
         path('see_notification/', views.get_notification, name='get_notifications'),
+        path('delete_notification/<int:notification_id>/', views.delete_notification, name='delete_notifications'),
 ]

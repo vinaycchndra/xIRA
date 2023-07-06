@@ -26,7 +26,10 @@
         {% for notify in notification %}
         <div class="card mt-4 {% if notify.is_not_seen %} bg-secondary {% endif %}"  style="border: 2px solid black;">
         <div class="card-body">
-           <strong> {{forloop.counter}})- </strong>{{notify.notification}}
+           <strong> --> </strong>{{notify.notification}}
+            <a  href="{% url 'delete_notifications' notify.id %}" type="button" class = "text-success" style="text-decoration: none" aria-label="Close">
+                    <strong><small>(Delete)</small></strong>
+            </a>
         </div>
         </div>
         {% endfor %}

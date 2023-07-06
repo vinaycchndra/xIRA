@@ -4,13 +4,14 @@ from accounts.models import ProjectManager, Account, Information
 from .forms import CreateTicketForm, DateForm
 from django.shortcuts import get_object_or_404
 from projects.models import Project
-from .models import Task
-from .models import status_field, task_type_choices, priority_field
+from .models import Task, status_field, task_type_choices, priority_field
 import datetime
 from accounts.views import push_notification
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='login')
 # Manager Accessible function
 def manage_ticket(request):
     url = get_url(request)
@@ -125,6 +126,7 @@ def create_ticket(request, project_id=None):
     return HttpResponse("You do not have permission to create Tasks")
 
 
+@login_required(login_url='login')
 # Manager Accessible function
 def edit_ticket(request, ticket_id=None):
     ticket = get_object_or_404(Task, id=ticket_id)
@@ -168,13 +170,14 @@ def edit_ticket(request, ticket_id=None):
 
 # Manager Accessible function
 def delete_ticket(request, ticket_id):
-    ticket = get_object_or_404(Task, id=ticket_id)
-    if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
-        ticket.delete()
-        user_message = """Ticket assigned to you in Project: "{}" is deleted""".format(ticket.project.project_name)
-        push_notification(ticket.assignee, user_message)
-        messages.success(request, 'Ticket deleted successfully')
-        return redirect('manage_ticket')
+    if request.user.is_authenticated:
+        ticket = get_object_or_404(Task, id=ticket_id)
+        if request.user.is_project_manager() and ticket.project.project_manager.project_manager.id==request.user.id:
+            ticket.delete()
+            user_message = """Ticket assigned to you in Project: "{}" is deleted""".format(ticket.project.project_name)
+            push_notification(ticket.assignee, user_message)
+            messages.success(request, 'Ticket deleted successfully')
+            return redirect('manage_ticket')
     return HttpResponse("You do not have permission to create Tasks")
 
 
@@ -233,32 +236,46 @@ def user_manage_ticket(request):
 
 # User Update Ticket view
 def update_status(request, ticket_id):
-    if request.method == 'POST':
-        try:
-            task = Task.objects.get(id=ticket_id, assignee__id=request.user.id)
-        except Task.DoesNotExist:
-            return HttpResponse("Not Found", status=404)
-        if request.POST['status'] != '':
-            task.status = request.POST['status']
-            task.save()
-            messages.success(request, "Ticket Status Changes Successfully")
-        return redirect('user_ticket_dashboard')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                task = Task.objects.get(id=ticket_id, assignee__id=request.user.id)
+            except Task.DoesNotExist:
+                return HttpResponse("Not Found", status=404)
+            if request.POST['status'] != '':
+                task.status = request.POST['status']
+                task.save()
+                messages.success(request, "Ticket Status Changes Successfully")
+            return redirect('user_ticket_dashboard')
 
     return HttpResponse('Not Allowed This Way to change the status!!!')
 
 
 def get_notification(request):
-    notify = Information.objects.filter(user__id=request.user.id).order_by('-created_at')
-    page_no = request.GET.get('page')
-    page_object = Paginator(notify, 8)
-    if page_no is None:
-        notify = page_object.get_page(1)
-    else:
-        notify = page_object.get_page(page_no)
-    context = {
-        'notification': notify,
-    }
-    return render(request, 'my_notifications.html', context)
+    if request.user.is_authenticated:
+        notify = Information.objects.filter(user__id=request.user.id).order_by('-created_at')
+        page_no = request.GET.get('page')
+        page_object = Paginator(notify, 8)
+        if page_no is None:
+            notify = page_object.get_page(1)
+        else:
+            notify = page_object.get_page(page_no)
+        context = {
+            'notification': notify,
+        }
+        return render(request, 'my_notifications.html', context)
+    return HttpResponse('Kindly Login to get notifications')
+
+
+# Delete Notification
+def delete_notification(request, notification_id):
+    if request.user.is_authenticated:
+        notify = get_object_or_404(Information, id=notification_id)
+        if request.user.id == notify.user.id:
+            notify.delete()
+            return redirect('get_notifications')
+        return HttpResponse("You do not have permission to create Tasks")
+    return HttpResponse('Kindly Login to delete notifications')
 
 
 def all_assignees_for_the_project(user, project_id):
