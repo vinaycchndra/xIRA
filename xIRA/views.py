@@ -37,3 +37,7 @@ def project_category(request, project_slug):
         'projects': list_projects,
     }
     return render(request, 'landingPage.html', context)
+
+
+def instruction_page(request):
+    return render(request, 'instruction_page.html')

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{%  static 'busy.jpg' %}" class="d-block w-100" alt="..." style="height: 475px;">
+      <div class="card bg-light border-0" >
+            <div class="alert alert-primary border-0" role="alert">
+                <h6><li>User can find all the projects in which they are tagged with My Projects filter button.</li></h6>
+                <h6><li>A user can change the status of the tickets assigned for all the tagged projects.</li></h6>
+                <h6><li>User can delete the notifications. The color of all the seen notifications will be white where as it will different for unseen notifications.</li></h6>
+                <h6><li>User can see all the notifications by clicking on the What's New button in dashboard.</li></h6>
+                <h6><li>User can filter projects category wise and project manager-wise from the Project Table.</li></h6>
+                <h6><li>User can navigate to specific project detail from the project table.</li></h6>
+                <h6><li>User can find all the assigned tickets from the My Tickets link</li></h6>
+                <h6><li>On the My Ticket page user can filter all the tickets all the possible combination of the filtering parameters</li></h6>
+                <h6><li>Filtering parameters are project, task status, task category, new task, old task, nearing deadline task</li></h6>
+                <h6><li>Ticket's color will depend upon the status of the ticket such as open, in progress, complete, backlog etc</li></h6>
+                <h6><li>Ticket's color will change automatically if the deadline is ended and the task status is not complete</li></h6>
+                <h6><li>User can change the status of task by clicking on it, However the user can not change the status of a task which is complete</li></h6>
+            </div>
+
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'To-Do.jpg' %}" class="d-block w-100" alt="..."  style="height: 475px;">
+
+      <div class="card bg-light border-0" >
+        <div class="card bg-light border-0" >
+            <div class="alert alert-danger border-0" role="alert">
+                <h6><li>Any user can be a Project Manager. However, only a django admin user can assign role of Project Manager to a user.</li></h6>
+                <h6><li>A Project can have only one project Manager.</li></h6>
+                <h6><li>A project manager can create new project from nav-bar which will be visible only to Project Manager.</li></h6>
+                <h6><li>A project manager can edit and delete a project from Project table.</li></h6>
+                <h6><li>Edit Project Page will include a search bar which will allow the Project Manager to search users and add or remove them from the project</li></h6>
+                <h6><li>User can also edit the project from the edit project page, also project manager can navigate to the manage ticket and create ticket page.</li></h6>
+                <h6><li>Manage ticket page gives a Project Manager full control over management of all the ticket for which user is Project Manager</li></h6>
+                <h6><li>Project Manager can filter all the tickets with different combinations of the filter parameters</li></h6>
+                <h6><li>Project Manager can delete or edit a ticket any ticket</li></h6>
+                <h6><li>If a project manager updates a ticket either by extending the deadline or by changing the category its status will be updagted to Open</li></h6>
+                <h6><li>A ticket once created with a specific project can not be tagged to another project it can then only be deleted.</li></h6>
+                <h6><li>Pagination is added for manage ticket page for Project Manager as well as for all the user in ther My task page and notification page.</li></h6>
+            </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+{% endblock %}
