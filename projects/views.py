@@ -61,6 +61,7 @@ def delete_project(request, pk):
     return redirect('dashboard')
 
 
+@login_required(login_url='login')
 def edit_project(request, pk):
     project = get_object_or_404(Project, id=pk)
     form = ProjectCreationForm(instance=project)

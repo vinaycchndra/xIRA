@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.instruction_page, name='instruction_page'),
@@ -27,4 +30,4 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('project/', include('projects.urls')),
     path('ticket/', include('tickets.urls')),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
