@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="card text-center">
+<div class="card text-center"  >
   <div class="card-header">
      <strong class="text-success">Started:</strong> {{project.start_date}}
   </div>
@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
               <div class="col-sm-4" style="">
-              <div class="card">
+              <div class="card"  style="border: 1px solid black;">
 
                 <div class="card-body">
                   <h5 class="card-title text-success"><strong>Project Category</strong></h5>
@@ -21,7 +21,7 @@
               </div>
           </div>
           <div class="col-sm-4" style="">
-              <div class="card">
+              <div class="card"  style="border: 1px solid black;">
 
                 <div class="card-body">
                   <h5 class="card-title text-success"><strong>Project Manager</strong></h5>
@@ -33,7 +33,7 @@
 
 
           <div class="col-sm-4" style="">
-              <div class="card">
+              <div class="card"  style="border: 1px solid black;">
 
                 <div class="card-body">
                   <h5 class="card-title text-success"><strong>Project Completion Date</strong></h5>
@@ -51,7 +51,7 @@
     <div class="container mt-3">
         <div class="row">
           <div class="col-sm-12" style="">
-              <div class="card">
+              <div class="card" style="border: 1px solid black;">
 
                 <div class="card-body">
                   <h5 class="card-title text-success"><strong>About</strong></h5>
@@ -74,7 +74,7 @@
 
         {% for employee in project.assignees.all %}
             <div class="col-sm-3" style="">
-              <div class="alert alert-success" role="alert">
+              <div class="alert alert-success" role="alert" style="border: 1px solid black;">
                   <h5 class="alert-heading text-center"><strong>{{employee}}</strong></h5>
                   <p class="text-center">{{employee.work_profile}}</p>
                 </div>

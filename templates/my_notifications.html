@@ -23,36 +23,42 @@
 
 
     <div class="col-lg" style="">
-        {% for notify in notification %}
-        <div class="card mt-4 {% if notify.is_not_seen %} bg-secondary {% endif %}"  style="border: 2px solid black;">
-        <div class="card-body">
-           <strong> --> </strong>{{notify.notification}}
-            <a  href="{% url 'delete_notifications' notify.id %}" type="button" class = "text-success" style="text-decoration: none" aria-label="Close">
-                    <strong><small>(Delete)</small></strong>
-            </a>
+        {% if notification %}
+                {% for notify in notification %}
+                <div class="card mt-4 {% if notify.is_not_seen %} bg-primary {% endif %}"  style="border: 2px solid black;">
+                <div class="card-body">
+                   <strong> --> </strong>{{notify.notification}}
+                    <a  href="{% url 'delete_notifications' notify.id %}" type="button" class = "text-success" style="text-decoration: none" aria-label="Close">
+                            <strong><small>(Delete)</small></strong>
+                    </a>
+                </div>
+                </div>
+                {% endfor %}
+
+                <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end pagination-sm mt-2">
+
+                    {% if notification.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{notification.previous_page_number}}">Previous</a></li>
+                    {% endif %}
+
+                      {% for page_no in notification.paginator.page_range %}
+                        {% if notification.number == page_no %}
+                                <li class="page-item active"><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+                        {% else %}
+                                <li class="page-item "><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if notification.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{notification.next_page_number}}">Next</a></li>
+                    {% endif %}
+              </ul>
+        </nav>
+        {% else %}
+        <div class="container mt-4">
+        <h4>You Do not have any notifications Yet !!!!</h4>
         </div>
-        </div>
-        {% endfor %}
-
-        <nav aria-label="Page navigation example">
-	  <ul class="pagination justify-content-end pagination-sm mt-2">
-
-		  	{% if notification.has_previous %}
-		  		<li class="page-item"><a class="page-link" href="?page={{notification.previous_page_number}}">Previous</a></li>
-		  	{% endif %}
-
-			  {% for page_no in notification.paginator.page_range %}
-		  		{% if notification.number == page_no %}
-		  				<li class="page-item active"><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
-		  		{% else %}
-		  				<li class="page-item "><a class="page-link" href="?page={{page_no}}">{{page_no}}</a></li>
-		  		{% endif %}
-		  	{% endfor %}
-		    {% if notification.has_next %}
-		  		<li class="page-item"><a class="page-link" href="?page={{notification.next_page_number}}">Next</a></li>
-		  	{% endif %}
-	  </ul>
-</nav>
+        {% endif %}
 
         </div>
         </div>

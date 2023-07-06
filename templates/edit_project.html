@@ -8,7 +8,7 @@
     <div class="row">
 
         <div class="col-lg" style="">
-            <div class="card h-90">
+            <div class="card h-90"  style="border: 1px solid black;">
       <article class="card-body">
 		<header class="mb-4 text-success"><h4 class="card-title">Edit Project</h4></header>
         <form action="{% url 'edit_project' project.id %}" method="POST">
@@ -42,7 +42,7 @@
 </div>
 
 <div class="col-lg" style="">
-<div class="card h-90">
+<div class="card h-90" style="border: 1px solid black;">
     <div class="card-body ">
         <header class="mb-4 text-success"><h4 class="card-title">Existing Employees</h4></header>
     <table class="table" style="position: relative;height: 436px;overflow: auto;display: block;">
@@ -66,7 +66,7 @@
 
 
 <div class="col-lg" style="">
-<div class="card h-90">
+<div class="card h-90"  style="border: 1px solid black;">
     <div class="card-body">
         <form action="{% url 'edit_project' project.id %}" class="d-flex"  method="POST">
             {% csrf_token %}
@@ -99,7 +99,7 @@
 <div class="container mt-2">
     <div class="row">
             <div class="col-lg-6" style="">
-                <div class="card">
+                <div class="card" >
                         <a class="btn btn-outline-success" href="{% url 'create_ticket' project.id %}" style="text-decoration: none;"><h5 class="text-center" ><strong>Create Ticket</strong></h5></a>
                 </div>
             </div>
