@@ -1,0 +1,1 @@
+web: gunicorn xIRA.wsgi --log-file -

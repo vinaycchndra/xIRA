@@ -103,7 +103,7 @@
 	{% for task in tickets %}
 	{% if task.status != 'Complete' %}
 	<a class="nav-link" type="button"  data-bs-toggle="modal" data-bs-target="#{{task.id}}" style="text-decoration: none;">
-	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% elif task.status == 'Complete' %}warning{% endif %}" role="alert">
 		<strong class="text-muted"> Project: </strong>
 		{{task.project}}
 		<strong class="text-muted">| Status: </strong>
@@ -153,7 +153,7 @@
 		  </div>
 		</div>
 	{% else %}
-	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}warning{% endif %}" role="alert">
 		<strong class="text-muted"> Project: </strong>
 		{{task.project}}
 		<strong class="text-muted">| Status: </strong>

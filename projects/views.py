@@ -7,8 +7,10 @@ from django.urls import reverse
 from django.db.models import Q
 from tickets.models import Task
 from accounts.views import push_notification
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='login')
 def create_project(request):
     form = ProjectCreationForm()
     context = {

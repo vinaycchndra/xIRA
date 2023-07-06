@@ -82,7 +82,7 @@
 
 <div class="container mt-4">
 	{% for task in tasks %}
-	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% else %}success{% endif %}" role="alert">
+	<div class="alert alert-{% if task.task_as_back_log %}danger{% elif task.status == 'Open' %}primary{% elif task.status == 'In Progress' %}info{% elif task.status == 'Complete' %}warning{% endif %}" role="alert">
 
 		<strong class="text-muted"> Assigned To: </strong>
 		{{task.assignee}}

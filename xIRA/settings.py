@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5&_+!m=5ek9coss18ixy2ux9d&g%v53gi(as_x#*271j-qsi6p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,6 +53,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'xIRA.urls'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://blogapp-production-efa3.up.railway.app'
+]
 
 TEMPLATES = [
     {
