@@ -190,7 +190,7 @@ def user_manage_ticket(request):
     project_choice = [(project.id, project.project_name) for project in projects]
     all_task_query = Task.objects.filter(assignee__id=request.user.id)
     for temp_task in all_task_query:
-        temp_task.task_as_backlog()
+        temp_task.task_as_back_log()
     context = {
         'project_choice': project_choice,
         'status_choice': status_field,
