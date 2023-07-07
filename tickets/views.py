@@ -25,6 +25,8 @@ def manage_ticket(request):
             'priority_choice': priority_field,
         }
         all_task_query = get_all_tickets_project_manager(request.user)
+        for temp_task in all_task_query:
+            temp_task.task_as_backlog()
         query_dic = request.GET
 
         if 'project_id' in query_dic:
@@ -187,6 +189,8 @@ def user_manage_ticket(request):
     projects = user_object.project_set.all()
     project_choice = [(project.id, project.project_name) for project in projects]
     all_task_query = Task.objects.filter(assignee__id=request.user.id)
+    for temp_task in all_task_query:
+        temp_task.task_as_backlog()
     context = {
         'project_choice': project_choice,
         'status_choice': status_field,
