@@ -26,7 +26,7 @@ def manage_ticket(request):
         }
         all_task_query = get_all_tickets_project_manager(request.user)
         for temp_task in all_task_query:
-            temp_task.task_as_backlog()
+            temp_task.task_as_back_log()
         query_dic = request.GET
 
         if 'project_id' in query_dic:
