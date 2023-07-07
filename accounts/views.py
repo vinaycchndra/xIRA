@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, Http404, HttpResponse
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from .models import Account, Information
-from .forms import RegistrationForm
+from .forms import RegistrationForm, ProfileUpdateForm
 
 
 def register(request):
@@ -58,3 +58,34 @@ def logout(request):
 def push_notification(user, message):
     notify = Information.objects.create(user=user, notification=message)
     notify.save()
+
+
+def update_profile(request, pk):
+    try:
+        instance = Account.objects.get(id=pk)
+        if request.user.id != pk:
+            return HttpResponse("You can not edit for the other user's profile !!!")
+    except Account.DoesNotExist:
+        raise Http404("This profile does not exist")
+
+    if request.method == 'GET':
+        form = ProfileUpdateForm(instance=instance)
+        context = {
+            'form': form
+        }
+        return render(request, 'update_profile.html', context)
+    else:
+        form = ProfileUpdateForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your Profile updated successfully!!!')
+            return redirect('dashboard')
+        else:
+            for key, value in form.errors.as_data().items():
+                messages.error(request, key + ": " + str(value[0]))
+            context = {
+                'form': form
+            }
+            return render(request, 'update_profile.html', context)
+
+

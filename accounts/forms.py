@@ -27,3 +27,19 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Password does not match!."
             )
+
+
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Account
+        fields = ['first_name', 'last_name', 'contact_number', 'work_profile']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['placeholder']= 'Enter First Name'
+        self.fields['last_name'].widget.attrs['placeholder']= 'Enter Last Name'
+        self.fields['contact_number'].widget.attrs['placeholder']= 'Enter Contact Number'
+        self.fields['work_profile'].widget.attrs['placeholder'] = 'Work Profile'
+        for field in self.fields:
+            self.fields[field].widget.attrs['class']= 'form-control'

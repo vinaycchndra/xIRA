@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section-content padding-y">
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:500px; margin-top:80px; border: 1px solid black;">
+      <article class="card-body">
+		  {% include 'includes/alerts.html' %}
+		<header class="mb-4 text-success"><h4 class="card-title">Sign up</h4></header>
+		<form action = "{% url 'update_profile' request.user.id %}" method="POST">
+				{% csrf_token %}
+				<div class="form-group row">
+					<label class="text-success" for="">First Name</label>
+					<div class="col form-group">
+						{{form.first_name}}
+
+					</div> <!-- form-group end.// -->
+				</div>
+				<br>
+				<div class="form-group row">
+					<label class="text-success" for="">Last Name</label>
+					<div class="col form-group">
+					  	{{ form.last_name }}
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<br>
+				<label class="text-success" for="date_field">Contact Number</label>
+				<div class="form-group row">
+					<div class="col form-group">
+							{{ form.contact_number }}
+					</div> <!-- form-group end.// -->
+				</div>
+				<br>
+				<label class="text-success" for="date_field">Work Profile</label>
+                <div class="form-group row">
+					<div class="col form-group">
+							{{ form.work_profile }}
+					</div> <!-- form-group end.// -->
+				</div>
+				<br>
+			    <div class="form-group ">
+			        <button type="submit" class="btn btn-dark btn-block"> Update  </button>
+			    </div> <!-- form-group// -->
+			<br>
+			<span class="text-dark">{{form.non_field_errors}}</span>
+			</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+
+
+{% endblock %}
+
+
+
